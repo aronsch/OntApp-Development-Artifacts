@@ -1,0 +1,20 @@
+<section class="requirement-analysis form-group" ng-show="analysis.analyzed && !analysis.dismissed">
+    <div ng-hide="analysis.hasIssues" class="alert alert-success">
+            <span class="h4"><i class="fa fa-lg fa-fw fa-check"></i> No Issues Found
+                <i class="fa fa-lg fa-fw fa-close pull-right requirement-analysis-alert-dismiss"
+                   data-ng-click="analysis.dismissed = true"></i>
+            </span>
+    </div>
+
+    <div ng-show="analysis.hasIssues" class="alert alert-warning">
+        <h4><i class="fa fa-fw fa-warning"></i> Possible Issues Found
+            <i class="fa fa-fw fa-close pull-right requirement-analysis-alert-dismiss"
+               data-ng-click="analysis.dismissed = true"></i>
+        </h4>
+
+        <dl class="dl-horizontal" ng-repeat="(type, words) in analysis.issues">
+            <dt class="text-danger">{{type}}</dt>
+            <dd ng-bind-html="words.html"></dd>
+        </dl>
+    </div>
+</section>

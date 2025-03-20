@@ -1,0 +1,43 @@
+a {
+    cursor: pointer;
+}
+
+.content {
+	margin-top: 50px;
+}
+.undecorated-link:hover {
+	text-decoration: none;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+.ng-invalid.ng-dirty {
+	border-color: #FA787E;
+}
+.ng-valid.ng-dirty {
+	border-color: #78FA89;
+}
+
+.header-buffer {
+    margin-top: 1.15em;
+}
+
+.alert-header-buffer div.alert {
+    margin-top: 1.15em;
+}
+
+.panel-close-btn {
+    margin-top: -5px;
+}
+
+.panel-close-btn .fa-stack-2x{
+    visibility: hidden;
+}
+
+.panel-close-btn:hover .fa-stack-2x{
+    visibility: visible;
+}
+
+.content {
+    margin-bottom: 3em;
+}

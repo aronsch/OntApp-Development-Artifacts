@@ -1,0 +1,47 @@
+<span class="text-muted small" ng-show="requirement.Properties.relatedRequirements(relation, subtype).length === 0">No {{ subtype }} attached</span>
+<ul class="panel-group list-unstyled">
+    <li class="panel panel-info"
+        ng-repeat="item in (subtype ? requirement.Properties.relatedRequirements(relation, subtype).reverse() : requirement.Properties.subRequirementsWithoutSubtype())"
+        ng-init="item.Properties.showDescription = false">
+        <div class="panel-heading">
+            <h5 class="panel-title small">
+                <button class="btn btn-sm btn-danger"
+                        ng-click="requirement.Properties.removeRelatedRequirement(item);">
+                    Remove
+                </button>
+                &nbsp;
+                    <span class="req-title-expand-desc"
+                          ng-click="item.Properties.toggleDescription()"
+                          title="{{ item.Properties.showDescription ? 'Hide' : 'Show'}} description">
+                        {{ item.Label }}&nbsp;
+                        <i class="fa fa-fw"
+                           ng-class="{ 'fa-caret-down': item.Properties.showDescription,
+                                        'fa-caret-right': !item.Properties.showDescription }"></i>
+                        <span class="small text-muted hidden-xs">
+                            <span class="hidden-sm">{{ item.Properties.showDescription ? 'Hide' : 'Show'}}&nbsp;</span>Description
+                        </span>
+                    </span>
+                <span ng-show="subtype" class="btn pull-right btn-warning" ng-click="requirement.Properties.removeRelatedRequirementSubtype(item)">Clear Subtype</span>
+                <span ng-if="relation !== 'SuperRequirement' && !subtype" class="btn-group pull-right hidden-xs"
+                      uib-dropdown
+                      uib-keyboard-nav>
+                    <button id="simple-btn-keyboard-nav" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                        {{ item.Subtype || 'Subtype' }}&nbsp;<span class="caret"></span>
+                    </button>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+                        <li role="menuitem" ng-hide="item.Subtype === ''">
+                            <a ng-click="requirement.Properties.removeRelatedRequirementSubtype(item)">&nbsp;</a>
+                        </li>
+                        <li role="menuitem" ng-repeat="subtypeItem in subtypes.Properties">
+                            <a ng-click="addRelatedRequirement(item, relation, subtypeItem.Label)">{{ subtypeItem.Label}}</a>
+                        </li>
+                    </ul>
+                </span>
+            </h5>
+        </div>
+        <p class="panel-body small requirement-description"
+           style="margin-bottom: 0;"
+           ng-bind-html="item.Properties.Description.Value"
+           ng-show="item.Properties.showDescription"></p>
+    </li>
+</ul>

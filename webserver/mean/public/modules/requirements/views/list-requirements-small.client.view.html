@@ -1,0 +1,13 @@
+<section ng-controller="SearchController" ng-init="find()">
+		<h2>Requirements <small ng-hide="searchState.requirements.$resolved">
+            <i class="fa fa-fw fa-spin fa-refresh"></i>Loading</small>
+        </h2>
+	<div class="list-group">
+		<a ng-repeat="requirement in searchState.requirements"
+           ng-click="openRequirementModal(requirement.IRI, requirement.Label)"
+		   class="list-group-item">
+			<h4 class="list-group-item-heading" ng-bind="requirement.Label"></h4>
+			<p class="small" ng-bind-html="requirement.Properties.Description.Value"></p>
+		</a>
+	</div>
+</section>

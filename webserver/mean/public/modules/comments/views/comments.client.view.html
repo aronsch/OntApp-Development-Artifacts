@@ -1,0 +1,66 @@
+<section class=""
+         ng-controller="CommentsController"
+         ng-if="authentication.user.permissions.comments.canView">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span class="badge">{{ comments.length }}</span> Comment{{ comments.length === 1 ?
+                '' : 's'}}</h3>
+        </div>
+        <div class="panel-body list-group comment-list">
+            <div class="list-group-item row"
+                 ng-repeat="comment in comments | orderBy:'CreatedDateTime'"
+                 ng-class="{ 'bg-info': comment.user === user }">
+                <div class="col-xs-12 col-sm-3 col-md-2"
+                     ng-class="{ 'text-info': comment.UserName === user.username }">
+                        <span class="comment-user visible-lg-block visible-md-block visible-sm-block visible-xs-inline-block">
+                            {{ comment.AuthorFullName || comment.UserName }}
+                        </span>
+                    <span class="comment-date small visible-lg-block visible-md-block visible-sm-block visible-xs-inline-block"
+                          title="{{ comment.createdDate().format('dddd, MMMM Do, YYYY h:mm:SS A') }}">
+                            {{ comment.createdDate().format('M/D/YY h:mma') }}
+                        </span>
+                    <span class="comment-status visible-lg-block visible-md-block visible-sm-block visible-xs-inline-block"
+                          ng-show="comment.UserName === user.username">
+                    <!-- User posted comment status display-->
+                    <!--<i class="fa fa-lg"-->
+                       <!--title="{{ comment.$resolved && !comment.$error ? 'Your comment was posted successfully' : 'posting comment' }}"-->
+                       <!--ng-class="comment.$resolved && !comment.$error ? 'fa-check text-success' : 'fa-spinner fa-spin'"></i>-->
+                </span>
+                </div>
+                <div class="col-xs-12 col-sm-9 col-md-10">
+                    <p ng-bind-html="comment.Value"></p>
+                </div>
+            </div>
+            <div ng-show="!comments.length" class="list-group-item text-muted">
+                <p>No comments yet</p>
+            </div>
+        </div>
+    </div>
+    <div ng-if="authentication.user.permissions.comments.canComment">
+        <button class="btn btn-default" ng-hide="isAddingComment" ng-click="setAddingComment()">
+            <i class="fa fa-comment"></i>&nbsp;Add Comment
+        </button>
+        <div class="panel panel-primary" ng-show="isAddingComment">
+            <div class="panel-heading">
+                <h4 class="panel-title"><i class="fa fa-commenting"></i>&nbsp;Add Comment
+                    <i class="fa fa-close fa-pull-right" role="button" ng-click="doneAddingComment()"></i></h4>
+            </div>
+            <form name="commentsform" class="panel-body row">
+                <div class="col-xs-12 col-sm-2 col-md-2">
+                    <span class="comment-user comment-active-user  visible-lg-block visible-md-block visible-sm-block visible-xs-inline-block">{{ user.nameFirstLast }}</span>
+                </div>
+                <div class="col-xs-12 col-sm-10 col-md-6">
+                    <textarea froala ng-model="comment.Value" focus-when="isAddingComment" focus-element="froala"></textarea>
+                    <p class="alert alert-danger small" ng-show="comment.$error" ng-bind-html="comment.$error.data">
+                    </p>
+                </div>
+            </form>
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-block" ng-click="create()"
+                        ng-disabled="comment.Value.length === 0">Post
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

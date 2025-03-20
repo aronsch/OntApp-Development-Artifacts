@@ -1,0 +1,6 @@
+<button class="btn btn-primary btn-lg"
+        ng-click="searchState.search()" ng-disabled="searchState.isLoading() || searchState.isUpdating()">
+    <i class="fa fa-fw fa-flip-horizontal"
+       ng-class="{'fa-refresh fa-spin': searchState.isLoading() || searchState.isUpdating(), 'fa-search': searchState.isReady()}"></i>
+    {{ text || 'Search' }}
+</button>

@@ -1,0 +1,22 @@
+<div class="row requirement-property-list">
+    <dl ng-repeat="property in requirement.Properties.detailsSortedByLabel() track by $index"
+        ng-if="!property.isArray() && property.$$key !== 'SuperRequirement'"
+        ng-show="property.$$isDetailProperty"
+        class="{{ settings.colClass.largeTextKeyRegEx.test(property.$$key) && property.Value.length ?
+                    settings.colClass.propertyListLargeText : settings.colClass.propertyList }}"
+        ng-class="{ 'text-muted': !property.Value }">
+        <dt class="requirement-property-title"
+            title="{{ property.PropertyDescription }}">
+            {{ property.Label }}
+            <i class="fa fa-fw {{ settings.iconClass[property.$$key] }}"></i>
+        </dt>
+        <dd title="{{ !property.Value ? 'A value has not been set for this property' : '' }}">
+            <span ng-if="property.isLargeText() || property.isSmallText()" ng-bind-html="property.Value"></span>
+			<span ng-if="property.isDate()"
+                  title="{{ property.dateValue().format('dddd MMMM do, YYYY h:mm:SS A') }}">
+				{{ property.dateValue().format('M/D/YY h:mma') }}
+			</span>
+            <i class="fa fa-minus" ng-show="!property.Value"></i>
+        </dd>
+    </dl>
+</div>

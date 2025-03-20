@@ -1,0 +1,7 @@
+<!-- DERIVED FROM  requirements/views/button-save.client.view.html -->
+<button class="btn btn-primary btn-lg glossaryentry-btn-save"
+        ng-click="saveAction();" ng-disabled="glossaryEntry.$submitted"> <!--  || !glossaryentry.Properties.isValid()" -->
+    <i class="fa fa-fw"
+       ng-class="{ 'fa-floppy-o': !glossaryEntry.$submitted, 'fa-refresh fa-spin': glossaryEntry.$submitted }"></i>
+    {{ text || 'Save' }}
+</button>

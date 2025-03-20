@@ -1,0 +1,21 @@
+
+<form class="form form-inline" ng-submit="searchState.search()">
+    <div class="form-group">
+        <label class="sr-only">Search Requirements</label>
+        <input type="text"
+               class="form-control"
+               placeholder="search requirements"
+               ng-model="searchState.searchModel.Properties.GeneralSearchTerm.Value">
+        <button class="btn btn-primary" formaction="submit">
+            <i class="fa fa-fw" ng-class="searchState.isLoading() ? 'fa-refresh fa-spin' : 'fa-search'"></i>
+            Search</button>
+    </div>
+</form>
+<p>
+<div class="list-group">
+    <a class="list-group-item" ng-repeat="r in searchState.requirements" ng-click="resultSelectAction(r._namePath)">
+        <h4 class="list-group-item-heading">{{ r.Properties.Name.Value }}</h4>
+        <p class="list-group-item-text small" ng-bind-html="r.Properties.Description.Value"></p>
+    </a>
+</div>
+</p>

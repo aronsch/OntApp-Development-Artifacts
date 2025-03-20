@@ -1,0 +1,81 @@
+<div ng-init="initNewUser()">
+    <div ng-if="roles.$resolved">
+        <h3>Create User</h3>
+        <form class="form form-horizontal" name="CreateForm" novalidate>
+            <div class="form-group">
+                <label class="col-sm-3" for="username-input">Username</label>
+                <div class="col-sm-9">
+                    <input id="username-input" class="form-control" type="text" placeholder="username"
+                           ng-model="selected.username" autocomplete="off" required/>
+                    <p class="help-block text-danger" ng-show="errors.username" ng-bind="errors.username.message"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3" for="username-input">Password</label>
+                <div class="col-sm-9">
+                    <input id="password-input" class="form-control" type="text" placeholder="password should be at least 8 characters"
+                           ng-model="selected.password" required ng-minlength="8"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3" for="email-input">Email</label>
+                <div class="col-sm-9">
+                    <input id="email-input" class="form-control" type="email" placeholder="email"
+                           ng-model="selected.email" autocomplete="off" required/>
+                    <p class="help-block" ng-show="errors.email" ng-bind="errors.email.message"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3" for="firstname-input">First Name</label>
+                <div class="col-sm-9">
+                    <input id="firstname-input" class="form-control" type="text" placeholder="first name"
+                           ng-model="selected.firstName" autocomplete="off" minlength=1 required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3" for="lastname-input">Last Name</label>
+                <div class="col-sm-9">
+                    <input id="lastname-input" class="form-control" type="text" placeholder="lastname"
+                           ng-model="selected.lastName" autocomplete="off" minlength=1 required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3">Organization Name</label>
+                <div class="col-sm-9">
+                    {{ selected.organizationName }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Roles</label>
+                <div class="list-group">
+                    <div class="list-group-item"
+                         ng-repeat="role in roles"
+                         ng-class="{ 'list-group-item-success': hasRole(role), 'disabled': role.isDefault }">
+                        {{ role.name }}
+                        <div class="pull-right">
+                            <div ng-show="!role.isDefault">
+                                <button ng-show="hasRole(role)"
+                                        class="btn btn-xs btn-danger"
+                                        ng-click="removeRole(role); CreateForm.$setDirty();">
+                                    Remove<span class="sr-only"> Role</span>
+                                </button>
+                                <button ng-show="!hasRole(role)"
+                                        class="btn btn-xs btn-success"
+                                        ng-click="addRole(role); CreateForm.$setDirty();">
+                                    Add<span class="sr-only"> Role</span>
+                                </button>
+                            </div>
+                        </div>
+                        <i ng-show="role.isDefault" class="fa fa-fw fa-lg fa-lock role-lock fa-pull-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block" ng-click="create()"
+                        ng-disabled="!CreateForm.$dirty || CreateForm.$invalid">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

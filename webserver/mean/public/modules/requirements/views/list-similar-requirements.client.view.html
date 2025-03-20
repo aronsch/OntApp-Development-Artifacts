@@ -1,0 +1,25 @@
+<section class="form-group" ng-show="similar.$resolved && !similar.dismissed">
+    <div class="panel panel-info" ng-show="similar.length">
+        <div class="panel-heading">
+            <h2 class="panel-title">
+                {{ similar.length }} Similar <span class="hidden-xs">Requirement{{ similar.length === 1 ? "" : "s" }}</span> Found
+                <a ng-click="similar.dismissed = true" title="Close this list">
+                    <i class="fa fa-lg fa-close pull-right requirement-analysis-alert-dismiss"></i>
+                </a>
+            </h2>
+        </div>
+        <div class="list-group">
+            <a ng-repeat="item in similar"
+               ng-click="openRequirementModal(item.Label)"
+               class="list-group-item">
+                <h5 class="list-group-item-heading" ng-bind="item.Label"></h5>
+                <p class="small" ng-bind-html="item.Properties.Description.Value"></p>
+            </a>
+        </div>
+    </div>
+    <p class="alert alert-warning" ng-show="!similar.length">No similar requirements were found
+        <a ng-click="similar.dismissed = true" title="Close this alert" class="text-warning">
+            <i class="fa fa-lg fa-close pull-right requirement-analysis-alert-dismiss"></i>
+        </a>
+    </p>
+</section>

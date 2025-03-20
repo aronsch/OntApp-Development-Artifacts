@@ -1,0 +1,10 @@
+<div ng-show="error" class="alert alert-danger">
+    <!-- icon for status -->
+    <i ng-if="error.status === 403" class="fa fa-fw fa-lg fa-user-times"></i>
+    <i ng-if="error.status === 404" class="fa fa-fw fa-lg fa-question-circle-o"></i>
+    <i ng-if="error.status === 409" class="fa fa-fw fa-lg fa-ban"></i>
+    <i ng-if="error.status === 423" class="fa fa-fw fa-lg fa-lock"></i>
+    <i ng-if="error.status === 500" class="fa fa-fw fa-lg fa-exclamation-triangle"></i>
+    <!-- error message -->
+    {{ error.message }}
+</div>

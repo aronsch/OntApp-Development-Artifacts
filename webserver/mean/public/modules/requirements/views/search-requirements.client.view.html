@@ -1,0 +1,160 @@
+<section ng-controller="SearchController" class="header-buffer" ng-show="searchState.models.resolved" ng-cloak>
+    <div>
+        <search-requirement-form></search-requirement-form>
+    </div>
+    <error-alert></error-alert>
+    <h2 class="h4 requirements-list-title" ng-show="searchState.requirements.$resolved && !error">
+        {{ searchState.requirements.length }} Search Result{{ searchState.requirements.length === 1 ? '' : 's' }}
+        <span ng-show="searchState.currentSearch.GeneralSearchTerm.length">
+            for &ldquo;{{ searchState.currentSearch.GeneralSearchTerm }}&rdquo;</span>
+    </h2>
+    <div class="panel panel-default" ng-show="searchState.requirements.$resolved && !error">
+        <div class="requirements-list-controls panel-heading">
+            <!-- Sort Controls -->
+            <span class="btn-group btn-group-xs requirements-list-controls-sorting">
+                <span class="btn btn-xs small text-primary"
+                      tabindex="0"
+                      ng-repeat="(key, property) in searchState.sortModel.Properties"
+                      ng-class="{ 'bg-info': searchState.sorting.sortByKey === key }"
+                      ng-click="searchState.sort(key)">
+                    {{ property.Label | splitCamelCase}}
+                    <span ng-switch="searchState.sorting.sortByKey === key">
+                         <i class="fa fa-fw fa-sort-asc text-muted"
+                            ng-switch-when="false"></i>
+                        <i class="fa fa-fw"
+                           ng-switch-when="true"
+                           ng-class="{ 'fa-sort-asc': searchState.sorting.sortByKey === key && searchState.sorting.sortAscending,
+                                        'fa-sort-desc': searchState.sorting.sortByKey === key && !searchState.sorting.sortAscending }"></i>
+                    </span>
+                </span>
+            </span>
+            <!-- Aggregate Display Controls -->
+            <span class="requirements-list-controls-folding pull-right">
+                <span>
+                    <span class="small">Details</span>
+                    <span class="btn btn-xs text-primary fa fa-fw fa-plus-square oa-tinybutton"
+                          ng-click="searchState.showAllProperties()">
+                    </span>
+                    <span class="btn btn-xs text-primary fa fa-minus-square-o oa-tinybutton"
+                          ng-click="searchState.hideAllProperties()">
+                    </span>
+                </span>
+                <span>
+                    <span class="small">Related</span>
+                    <span class="btn btn-xs text-primary fa fa-fw fa-plus-square oa-tinybutton"
+                          ng-click="searchState.showAllRelated()">
+                    </span>
+                    <span class="btn btn-xs text-primary fa fa-minus-square-o oa-tinybutton"
+                          ng-click="searchState.hideAllRelated()">
+                    </span>
+                </span>
+            </span>
+        </div>
+
+        <!-- Search Result List-->
+        <div class="requirements-list list-group"
+             ng-show="searchState.requirements.$resolved">
+            <!-- Search Result List Item-->
+            <div ng-repeat="requirement in (searchState.requirements.sorted || searchState.requirements)"
+                 class="list-group-item">
+                <div class="requirement-list-item-content">
+                    <h4 class="list-group-item-heading">
+                        <a ng-href="#!/requirements/{{requirement.Label | namePathFormat}}"
+                           ng-bind="requirement.Label"></a>
+                    </h4>
+                    <requirement-description></requirement-description>
+                    <!-- Detail Display Controls-->
+                    <div class="requirement-list-item-controls"
+                         ng-class="{ 'oa-control-margin': requirement.Properties.showProperties || requirement.Properties.showRelated }">
+                        <!-- Edit -->
+                        <a class="btn btn-sm btn-primary" style="vertical-align: top"
+                           title="Edit this requirement"
+                           ng-href="/#!/requirements/{{requirement.Label | namePathFormat}}/edit"
+                           ng-if="authentication.user.permissions.requirements.canEdit"
+                           ng-hide="requirement._locked">
+                            <i class="fa fa-fw fa-lg fa-pencil"></i>
+                            <span class="sr-only">Edit</span>
+                        </a>
+                        <div class="btn btn-sm btn-primary"
+                             ng-show="requirement._locked"
+                             ng-if="authentication.user.permissions.requirements.canEdit"
+                             title="Currently being edited by another user" disabled>
+                            <i class="fa fa-fw fa-lg fa-lock"></i>
+
+                        </div>
+                        <button-interrogate-sm
+                                ng-if="authentication.user.permissions.requirements.canEdit"></button-interrogate-sm>
+                        <!-- Show Properties List -->
+                        <span class="btn btn-sm btn-info requirement-search-result-section-btn"
+                              role="button"
+                              title="Show more details for this requirement"
+                              ng-click="requirement.Properties.toggleProperties()"
+                              style="margin-right: 4px;">
+                        <i class="fa fa-fw"
+                           ng-class="{ 'fa-chevron-right fa-rotate-90': requirement.Properties.showProperties, 'fa-chevron-right': !requirement.Properties.showProperties }"></i>
+                        Details</span>
+                        <!-- Show Related Requirements List-->
+                        <span class="btn btn-sm btn-info requirement-search-result-section-btn" style="margin-right: 4px;"
+                              ng-click="requirement.Properties.toggleRelated()"
+                              role="button"
+                              title="Show related requirements"
+                              ng-show="requirement.Properties['RelatedRequirements'].Value.length">
+                        <i class="fa fa-fw"
+                           ng-class="{ 'fa-chevron-right fa-rotate-90': requirement.Properties.showRelated, 'fa-chevron-right': !requirement.Properties.showRelated }"></i>
+                        Related
+                    </span>
+                        <!-- Show Comments List-->
+                        <span class="btn btn-sm btn-info requirement-search-result-section-btn" style="margin-right: 4px;"
+                              ng-click="requirement.Properties.toggleComments()"
+                              role="button"
+                              title="Show related requirements"
+                              ng-show="requirement.Properties.commentCount()">
+                    <i class="fa fa-fw"
+                       ng-class="{ 'fa-chevron-right fa-rotate-90': requirement.Properties.showComments, 'fa-chevron-right': !requirement.Properties.showComments }"></i>
+                    <span class="badge">{{ requirement.Properties.commentCount() }}</span> Comments
+                </span>
+                    </div>
+                    <!-- Detail Display -->
+                    <div ng-show="requirement.Properties.showRelated" class="requirement-search-result-section">
+                        <h5 class="requirement-search-result-section-title">Related</h5>
+                        <property-list-related-requirements class="small no-btm-margin"
+                                                            ng-if="requirement.Properties.relatedRequirements().length">
+                        </property-list-related-requirements>
+                        <div class="btn btn-default btn-xs requirement-search-result-section-control"
+                             role="button"
+                             title="close Related Requirements section"
+                             ng-click="requirement.Properties.toggleRelated()">
+                            <i class="fa fa-close"></i><span class="sr-only">Collapse Section</span>
+                        </div>
+                    </div>
+                    <div ng-show="requirement.Properties.showProperties" class="requirement-search-result-section">
+                        <h5 class="requirement-search-result-section-title">Details</h5>
+                        <property-display class="small">
+                        </property-display>
+                        <div class="btn btn-default btn-xs requirement-search-result-section-control"
+                             role="button"
+                             title="close Requirement Properties section"
+                             ng-click="requirement.Properties.toggleProperties()">
+                            <i class="fa fa-close"></i><span class="sr-only">Collapse Section</span>
+                        </div>
+                    </div>
+                    <div ng-if="requirement.Properties.showComments" class="requirement-search-result-section small">
+                        <comments requirement="requirement"></comments>
+                        <div class="btn btn-default btn-xs requirement-search-result-section-control"
+                             role="button"
+                             title="close View Requirement Comments section"
+                             ng-click="requirement.Properties.toggleComments()">
+                            <i class="fa fa-close"></i><span class="sr-only">Collapse Section</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Zero Results Message -->
+    <div class="alert alert-warning text-center"
+         ng-hide="!searchState.requirements.$resolved || searchState.requirements.length || error">
+        No Matching Requirements Found
+    </div>
+</section>

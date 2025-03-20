@@ -1,0 +1,191 @@
+<div class="lead" ng-hide="requirement.$$ready"><p><i class="fa fa-lg fa-spin fa-refresh"></i> Loading</p></div>
+<form name="{{ formName }}"
+      class="form requirement-form"
+      ng-show="requirement.$$ready"
+      ng-init="form = formName; req = requirement.Properties;" novalidate>
+    {{ form }} {{ d }}
+    <!-- Primary fields-->
+    <div class="form-group row">
+        <req-form-label text="Name" title="{{ req.Name.PropertyDescription }}" key="Name"
+                        required-value="req.Name.Value"
+                        class="required-icon" required-icon-prepend label-col></req-form-label>
+        <small-text-input model="req.Name.Value"
+                          title="{{ req.Name.PropertyDescription }}"
+                          placeholder="requirement name"
+                          input-col
+                          focus-when="requirement.$$ready"
+                          focus-element="input"
+                          spellcheck="true"></small-text-input>
+    </div>
+    <div class="form-group row">
+        <req-form-label text="Description" title="{{ req.Name.PropertyDescription }}" key="Description"
+                        required-value="req.Description.Value"
+                        required-icon-prepend
+                        label-col></req-form-label>
+        <div input-col>
+            <textarea froala="froalaOptions" key="{{window.reqsFroalaLicense}}" glossary-typahead
+                      id="{{ req.Description.$$key + '-input'}}"
+                      title="{{ req.Description.PropertyDescription }}"
+                      ng-model="req.Description.Value"></textarea>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div input-col input-offset>
+            <button-analyze requirement="requirement"></button-analyze>
+            <button-similar requirement="requirement"></button-similar>
+        </div>
+    </div>
+    <!-- Description feedback elements -->
+    <a id="related-requirements"></a>
+    <div class="row">
+        <requirement-analysis requirement="requirement" input-col input-offset></requirement-analysis>
+    </div>
+    <div class="row">
+        <list-similar-requirements requirement="requirement" input-col input-offset></list-similar-requirements>
+    </div>
+    <!--Rationale field-->
+    <div class="form-group row">
+        <req-form-label text="Rationale-Assumptions" title="{{  req.Rationale.PropertyDescription}}" key="Rationale"
+                        req="data" label-col></req-form-label>
+        <div input-col>
+        <textarea froala="froalaOptions" title="{{ req.Rationale.PropertyDescription}}"
+                  ng-model="req.Rationale.Value"></textarea>
+        </div>
+    </div>
+    <!--/Rationale field-->
+    <div class="form-group row" ng-if="requirement.Active === true || requirement.Active ===  false">
+        <req-form-label text="Active"
+                        custom-icon-class="{{ requirement.Active ? 'fa-power-off text-success' : 'fa-power-off text-danger' }}"
+                        label-col></req-form-label>
+        <div class="btn-group btn-group-sm visible-sm visible-md visible-lg" input-col>
+            <button class="btn btn-sm"
+                    ng-click="requirement.Active=true; clickFn()"
+                    ng-class="requirement.Active ? 'active btn-info' : 'btn-default' ">
+                Active
+            </button>
+            <button class="btn btn-sm"
+                    ng-click="requirement.Active=false; clickFn()"
+                    ng-class="requirement.Active ? 'btn-default' : 'active btn-warning' ">
+                Inactive
+            </button>
+        </div>
+        <!-- Dropdown replaces button group for xs viewport-->
+        <select class="visible-xs hidden-sm hidden-md hidden-lg form-control" ng-model="requirement.Active">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+    </div>
+    <!--/Primary fields-->
+    <!--Related requirements-->
+    <uib-accordion>
+        <div uib-accordion-group class="panel-primary">
+            <div uib-accordion-heading class="accordian-toggle accordian-no-underline">
+                <div ng-click="toggleRelated()">
+                    Related Requirements
+                    <i class="fa fa-lg fa-caret-right animate-fa-rotation requirement-form-addl-opts-arrow"
+                       ng-class="{ 'fa-rotate-90': showRelated }"></i>
+                    <div class="requirement-form-addl-opts-related pull-right"
+                         ng-hide="showRelated">
+                                    <span class="requirement-form-addl-opts-related-status">
+                                        <span class="badge">{{ req.superRequirements().length }}</span>
+                                        <i class="fa fa-fw {{ settings.iconClass['SuperRequirement'] }}"></i>
+                                        <span class="hidden-xs">SuperRequirement{{ req.superRequirements().length !== 1 ? 's' : '' }}</span>
+                                    </span>
+                        <span class="requirement-form-addl-opts-related-status">
+                                        <span class="badge">{{ req.subRequirements().length }}</span>
+                                        <i class="fa fa-fw {{ settings.iconClass['SubRequirement'] }}"></i>
+                                        <span class="hidden-xs">SubRequirement{{ req.subRequirements().length !== 1 ? 's' : '' }}</span>
+                                    </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h4 class="sr-only">
+                    Related Requirements
+                </h4>
+                <div class="col-xs-12 col-sm-6" style="border-right: lightgrey 1px solid">
+                    <req-form-label text="SuperRequirement"
+                                    title="More General, Less Specific; SubRequirements provide additional detail or specifics."
+                                    key="SuperRequirement"></req-form-label>
+                    <requirement-picker requirement="requirement" relation="SuperRequirement"
+                                        show-related-list="true"
+                                        class=""></requirement-picker>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6">
+                    <req-form-label text="SubRequirements"
+                                    title="More Specific, Less General: Provide additional detail or specifics to SuperRequirements."
+                                    key="SubRequirements"></req-form-label>
+                    <requirement-picker requirement="requirement" relation="SubRequirement"
+                                        show-related-list="true"
+                                        class=""></requirement-picker>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+    <!--/Related requirements-->
+    <!--Additional Form Options-->
+    <uib-accordion>
+        <div class="panel-primary requirement-form-addl-opts" uib-accordion-group>
+            <div uib-accordion-heading class="accordian-toggle accordian-no-underline">
+                <!--status icon tooltip template-->
+                <script type="text/ng-template" id="reqFormTooltipTemplate.html">
+                    <strong ng-bind-html="prop.Label | nonBreakingSpace"></strong><br/>
+                    <span ng-bind-html="prop.hasValue() ? prop.htmlValue() : '(not set)'"></span>
+                </script>
+                <!--/status icon tooltip template-->
+                <div ng-click="toggleMore()">
+                    <span class="">More<span class="hidden-xs"> Options</span></span>
+                    <i class="fa fa-lg fa-caret-right animate-fa-rotation requirement-form-addl-opts-arrow"
+                       ng-class="{ 'fa-rotate-90': showMore }"></i>
+                    <!--Minimized More Options Status display-->
+                    <div class="requirement-form-addl-opts-icons" ng-hide="showMore">
+                        <!--Icons for each property with tooltip containing current value-->
+                        <span ng-repeat="prop in req.secondaryProperties(false) | orderBy:'Label'"
+                              ng-click="jumpToOption(prop.$$key)">
+                            <i class="fa fa-fw {{ settings.iconClass[prop.$$key] }}"
+                               uib-tooltip-template="'reqFormTooltipTemplate.html'"
+                               tooltip-append-to-body="true"
+                               tooltip-animation="false"
+                               title="{{ prop.PropertyDescription }}"
+                               ng-class="{ 'requirement-form-status-muted': !prop.hasValue() }"></i>
+                        </span>
+                        <!--/Minimized More Options Status display-->
+                    </div>
+                </div>
+            </div>
+            <!--panel body-->
+            <div class="addl-opts">
+                <!--Requirement properties inputs-->
+                <h4 class="sr-only">
+                    Requirement Options
+                </h4>
+                <div class="form-group row"
+                     ng-repeat="prop in req.secondaryProperties() | orderBy:'Label'"
+                     ng-if="!isPrimaryKey(prop.$$key) && !isHiddenKey(prop.$$key)"
+                     title="{{ prop.PropertyDescription }}">
+                    <!--property input elements-->
+                    <req-form-label text="{{ prop.Label }}" key="{{ prop.$$key }}" label-col></req-form-label>
+                    <div class="col-sm-12">
+                        <div ng-if="prop.isSmallText()">
+                            <input name="{{ prop.$$key }}" class="form-control" type="text"
+                                   ng-model="req[prop.$$key].Value">
+                        </div>
+                        <div ng-if="prop.hasEnumeration()">
+                            <div class="btn-group">
+                                <input-dropdown-buttons></input-dropdown-buttons>
+                            </div>
+                        </div>
+                    </div>
+                    <a id="input-{{prop.$$key}}"></a>
+                    <!--/property input elements-->
+                </div>
+                <!--/Requirement properties inputs-->
+            </div>
+            <!--/panel body-->
+        </div>
+        <!--/Additional Form Options-->
+    </uib-accordion>
+    <div class="form-group row">
+        <save-button class="col-xs-12"></save-button>
+    </div>
+</form>

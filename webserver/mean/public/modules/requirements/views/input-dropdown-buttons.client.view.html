@@ -1,0 +1,78 @@
+<!-- Button Group -->
+<div ng-if="!prop.isBoolean()
+            && (!settings.search.advancedSearchMultiselect
+            || prop.isUndefined(prop.isMultiselect)
+            || prop.isSingleSelect())">
+    <div class="btn-group btn-group-sm visible-sm visible-md visible-lg">
+        <button class="btn btn-sm"
+                ng-click="prop.Value = ''; prop.IRI = ''; clickFn()"
+                ng-class="{
+                     'active btn-warning': prop.Value.length === 0,
+                     'btn-default': prop.Value.length !== 0 }">
+            <i class="fa fa-minus"></i>
+        </button>
+        <button class="btn btn-sm"
+                ng-repeat="item in prop.Enum"
+                ng-click="prop.Value = item.Label; prop.IRI = item.IRI; clickFn()"
+                ng-class="{'active btn-info': item.IRI === prop.IRI,
+                    'btn-default': item.IRI !== prop.IRI }">
+            {{ item.Label }}
+        </button>
+    </div>
+    <!-- Dropdown replaces button group for xs viewport-->
+    <select class="visible-xs hidden-sm hidden-md hidden-lg form-control"
+            ng-options="item as item.Label for item in prop.Enum" ng-model="prop.Value">
+        <option value=""></option>
+    </select>
+</div>
+
+<div ng-if="settings.search.advancedSearchMultiselect
+            && prop.isDefined(prop.isMultiselect)
+            && prop.isMultiselect()
+            && !prop.isBoolean()">
+    <div class="btn-group btn-group-sm visible-sm visible-md visible-lg">
+        <button class="btn btn-sm"
+                ng-click="prop.resetValue(); clickFn()"
+                ng-class="{
+                     'active btn-default': prop.Value.length === 0,
+                     'btn-danger': prop.Value.length !== 0 }">
+            <i class="fa fa-close"></i>
+        </button>
+        <button class="btn btn-sm"
+                ng-repeat="item in prop.Enum"
+                ng-click="prop.toggleEnumItemSelected(item); clickFn()"
+                ng-class="prop.isEnumItemSelected(item) ?
+                'active btn-info' : 'btn-default' ">
+            <i class="fa fa-fw" ng-class="prop.isEnumItemSelected(item) ?
+            'fa-check-square' : 'fa-square-o'"></i>
+            {{ item.Label }}
+        </button>
+    </div>
+    <!-- Dropdown replaces button group for xs viewport-->
+    <select class="visible-xs hidden-sm hidden-md hidden-lg form-control"
+            ng-options="item as item.Label for item in prop.Enum" ng-model="prop.Value"
+            multiple="true">
+        <option value="">-</option>
+    </select>
+</div>
+
+<div ng-if="prop.isBoolean()">
+    <div class="btn-group btn-group-sm visible-sm visible-md visible-lg">
+        <button class="btn btn-sm"
+                ng-click="prop.set(true); clickFn()"
+                ng-class="prop.Value ? 'active btn-info' : 'btn-default' ">
+            True
+        </button>
+        <button class="btn btn-sm"
+                ng-click="prop.set(false); clickFn()"
+                ng-class="prop.Value ? 'btn-default' : 'active btn-info' ">
+            False
+        </button>
+    </div>
+    <!-- Dropdown replaces button group for xs viewport-->
+    <select class="visible-xs hidden-sm hidden-md hidden-lg form-control" ng-model="prop.Value">
+        <option value="">-</option>
+        <option value="true">True</option>
+        <option value="false">False</option>
+    </select>
+</div>

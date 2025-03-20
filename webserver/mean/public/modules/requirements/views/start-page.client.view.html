@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="row col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+             search-shortcut>
+            <p>
+            <form ng-submit="searchWithTerm()">
+                <div class="form-group">
+                    <label class="sr-only">Search</label>
+                    <div class="input-group">
+                        <input class="form-control" ng-model="searchTerm" placeholder="search requirements" title="search requirments (opens 'Search' page)">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-primary" title="search requirements">
+                                <i class="fa fa-search"></i><span class="sr-only">Search</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </p>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+             ng-show="authentication.user && authentication.user.permissions.requirements.canCreate">
+            <a class="btn btn-primary btn-lg full-width" href="#!/create">
+            <span class="fa-stack fa-2x app-big-btn">
+                <i class="fa fa-file-o fa-stack-2x"></i>
+                <i class="fa fa-plus fa-stack-1x"></i>
+            </span>
+                <h2 class="app-big-btn">
+                    New<span class="hidden-xs"> Requirement</span>
+                </h2>
+            </a>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <requirement-feed></requirement-feed>
+    </div>
+</div>
+{{ user }}

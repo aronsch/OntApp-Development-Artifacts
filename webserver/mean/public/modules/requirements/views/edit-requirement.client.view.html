@@ -1,0 +1,11 @@
+
+<section requirement
+         ng-init="findOneForEdit()">
+    <div class="">
+        <h1 class="h4">Editing Requirement</h1>
+    </div>
+    <error-alert></error-alert>
+    <div ng-if="requirement.$resolved && error.status !== 404" ng-cloak>
+        <requirement-form save-action="update"></requirement-form>
+    </div>
+</section>

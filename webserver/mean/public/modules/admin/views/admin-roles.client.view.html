@@ -1,0 +1,131 @@
+<div>
+    <h3>User Roles
+        <button class="btn btn-primary" ng-click="initNewRole()">Create Role</button>
+    </h3>
+    <table class="table" ng-class="{ 'table-hover': !selected}">
+        <thead>
+        <tr ng-hide="newRole">
+            <th>Role&nbsp;Name</th>
+            <th>
+                <dl style="margin-bottom: 0;" class="dl-horizontal">
+                    <dt>Group</dt>
+                    <dd><strong>Permissions</strong></dd>
+                </dl>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="roles.$promise && !roles.$resolved">
+            <td colspan="2" class="text-center"><i class="fa fa-lg fa-refresh fa-spin"></i> Loading</td>
+        </tr>
+        <!--Role select-->
+        <tr ng-repeat="role in roles"
+            ng-init="descriptions=role.permissions.describe()"
+            ng-class="{ 'text-danger': !role.active, 'info': isSelected(role) }"
+            ng-click="select($index)"
+            ng-hide="(selected || newRole) && (selected || newRole)._id !== role._id">
+            <td class="role-mgr-title-desc"><strong>{{ role.name }}</strong>
+                &nbsp;<i class="fa fa-lg fa-edit" ng-show="isSelected(role)"></i>
+                <p class="small role-mgr-role-desc">{{ role.description }}</p>
+            </td>
+            <td class="role-mgr-permissions">
+                <dl class="dl-horizontal permission-list" ng-repeat="group in descriptions">
+                    <dt>
+                        {{ group.name }}
+                    </dt>
+                    <dd>
+                        <span class="label label-lg role-permission-label"
+                              ng-repeat="permissionName in group.permissionNames | orderBy: permissionName"
+                              ng-class="role.permissions.permissionLabelClass(permissionName)">
+                            {{ permissionName }}
+                        </span>
+                    </dd>
+                </dl>
+            </td>
+        </tr>
+        <!--/Role select-->
+        <!--Role Update Form-->
+        <tr ng-if="((selected || newRole) || newRole)">
+            <td colspan="2" class="user-update-form">
+                <form class="form" name="UpdateForm" novalidate>
+                    <h4>
+                        <span class="sr-only">{{ (selected || newRole).name }}</span>
+                        <button class="btn btn-sm" ng-click="deselect()"
+                                ng-class="UpdateForm.$dirty ? 'btn-danger' : 'btn-default'">
+                            Cancel
+                        </button>
+                        <button class="btn btn-sm btn-primary" ng-click="update()"
+                                ng-disabled="!UpdateForm.$dirty || UpdateForm.$invalid">
+                            Save
+                        </button>
+                        <div class="pull-right" ng-show="selected">
+                            <button class="btn btn-sm btn-warning" ng-click="deactivate()"
+                                    ng-show="canDeactivate() && selected.active">
+                                Deactivate
+                            </button>
+                            <button class="btn btn-sm btn-success" ng-click="activate()"
+                                    ng-show="canDeactivate() && !selected.active">
+                                Reactivate
+                            </button>
+                            <button class="btn btn-sm btn-danger" ng-click="delete()"
+                                    ng-show="canDelete()" ng-disabled="selected.isDefault">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </h4>
+                    <div class="form-group">
+                        <div class="form-group form-group">
+                            <label for="role-name-input">Role Name</label>
+                            <input id="role-name-input" class="form-control" type="text"
+                                   spellcheck="true"
+                                   ng-model="currentFocus().name" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group form-group">
+                            <label for="description-input">Role Description</label>
+                            <textarea id="description-input" class="form-control" rows="1"
+                                      spellcheck="true"
+                                      ng-model="currentFocus().description" required></textarea>
+                        </div>
+                    </div>
+                    <!--Permissions Form-->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <span class="panel-title">Permissions</span>
+                        </div>
+                        <div class="list-group"
+                             ng-init="groups = currentFocus().permissions.asArray()">
+                            <div class="list-group-item"
+                                 ng-repeat="group in groups | orderBy: 'name'">
+                                <div class="list-group-item-heading">{{ group.name }}</div>
+                                <!--<p class="list-group-item-text">-->
+                                <div class="list-group-item-text list-group">
+                                    <a class="list-group-item admin-toggle"
+                                       ng-repeat="keyMap in group.keyMaps | orderBy: 'name'"
+                                       ng-click="currentFocus().permissions.togglePermission(group.name, keyMap.key); UpdateForm.$setDirty()"
+                                       ng-class="{ 'list-group-item-success': currentFocus().permissions[group.name][keyMap.key] }">
+                                        <i class="fa fa-lg fa-fw" ng-class="keyMap.iconClass"></i>
+                                        <i class="fa fa-lg fa-fw"
+                                           ng-class="currentFocus().permissions[group.name][keyMap.key] ? 'fa-check-square-o' : 'fa-square-o'"></i>
+                                        {{ keyMap.name }}
+                                    </a>
+                                </div>
+                                <!--</p>-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Permissions Form-->
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary btn-block" ng-click="update()"
+                                ng-disabled="!UpdateForm.$dirty || UpdateForm.$invalid">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        <!--/Role Update Form-->
+        </tbody>
+    </table>
+</div>

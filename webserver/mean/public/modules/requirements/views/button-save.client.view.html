@@ -1,0 +1,6 @@
+<button class="btn btn-primary btn-lg requirement-btn-save"
+        ng-click="saveAction();" ng-disabled="requirement.$submitted || !requirement.Properties.isValid()">
+    <i class="fa fa-fw"
+       ng-class="{ 'fa-floppy-o': !requirement.$submitted, 'fa-refresh fa-spin': requirement.$submitted }"></i>
+    {{ text || 'Save' }}
+</button>

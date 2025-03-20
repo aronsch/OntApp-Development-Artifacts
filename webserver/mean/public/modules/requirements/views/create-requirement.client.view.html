@@ -1,0 +1,10 @@
+<section requirement
+         ng-init="emptyRequirement()">
+    <div class="">
+        <h1>New Requirement</h1>
+    </div>
+    <div ng-if="requirement.$resolved">
+        <error-alert></error-alert>
+        <requirement-form save-action="create" name="createForm"></requirement-form>
+    </div>
+</section>

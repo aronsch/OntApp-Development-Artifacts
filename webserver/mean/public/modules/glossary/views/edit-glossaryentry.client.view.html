@@ -1,0 +1,12 @@
+<!-- 	glossaryentrys/views/edit-glossaryentry.client.view.html -->
+
+<section glossaryentry
+         ng-init="findOneForEdit()">
+    <div class="">
+        <h1>Edit Glossary Entry</h1>
+    </div>
+    <div ng-if="glossaryEntry.$resolved">
+        <p ng-show="error" class="alert alert-danger" ng-bind-html="error"></p>
+        <glossaryentry-form save-action="update"></glossaryentry-form>
+    </div>
+</section>

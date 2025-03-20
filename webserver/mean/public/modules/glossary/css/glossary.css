@@ -1,0 +1,203 @@
+.glossaryentry-user,
+.glossaryentry-date,
+.glossaryentry-status {
+
+}
+
+.glossary-dl {
+    margin-bottom: 0;
+}
+
+.glossaryentry-user {
+    font-weight: bold;
+}
+
+.glossaryentry-active-user {
+
+}
+
+.glossary-add-entry-btn {
+    margin-top: -6px;
+}
+
+.glossary-add-entry-check {
+    margin-top: -4px;
+
+}
+
+.list-group-item.glossary-panel-item {
+    margin: -15px -15px -10px -15px;
+}
+
+.glossary-related-count {
+    display: block;
+}
+
+.glossary-related-count a {
+    display: inline-block;
+    padding: 0 0 1px 4px;
+    border-radius: 1em;
+}
+
+.glossary-related-count a:hover,
+.glossary-related-count a:focus {
+    display: inline-block;
+    padding: 0 0 1px 5px;
+    border-radius: 1em;
+    text-decoration: none;
+    background-color: #cccccc;
+}
+
+.glossary-entry-req-containing .list-group {
+    margin-bottom: 0;
+}
+
+.glossary-entry-req-containing h5 {
+    margin-top: 0;
+}
+
+.glossary-entry-req-containing hr {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.glossary-text-block {
+    display: block;
+}
+
+.glossary-entry-collapsed {
+    max-height: 84px;
+    overflow: hidden;
+}
+
+.glossary-entry-collapsed .gradient {
+    position: absolute;
+    display: block;
+    height: 84px;
+    width: 100%;
+    bottom: 0;
+    background: linear-gradient(to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0) 55%,
+    rgba(255, 255, 255, 1) 100%);
+    z-index: 100;
+}
+
+.glossary-text-block .gradient {
+    transition: opacity 350ms ease, display 350ms linear;
+    opacity: 1;
+}
+
+.glossary-entry-expanded .gradient {
+    opacity: 0;
+}
+
+.glossary-entry-collapsed .smart-collapse-expander {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    width: 100%;
+    z-index: 101;
+}
+
+.glossary-entry-expanded .smart-collapse-expander {
+    position: relative;
+}
+
+.smart-collapse-expander {
+    color: #337ab7;
+}
+
+.glossary-entry-expanded .smart-collapse-icon .fa-ellipsis-h {
+    display: none;
+}
+
+.smart-collapse-icon .fa-ellipsis-h {
+    background-color: #FFF;
+    padding: 3px;
+    border-radius: 50%;
+    border: #337ab7 0 solid;
+    transition: border-width 100ms;
+}
+
+.glossary-entry-collapsed:hover .smart-collapse-icon .fa-ellipsis-h {
+    border-width: 3px;
+}
+
+.smart-collapse-icon {
+    display: block;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+}
+
+.smart-collapse-icon .fa {
+    display: inline-block;
+}
+
+.smart-collapse-icon.smart-collapse-ellipses {
+    bottom: 0.66em;
+}
+
+.smart-collapse-icon.smart-collapse-caret {
+    bottom: 0;
+}
+
+.glossary-section-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 800;
+}
+
+.glossary-section-head.list-group-item {
+    border-bottom-width: 3px;
+}
+
+.glossary-entry-list section {
+    margin-bottom: 1.15em;
+}
+
+.glossary-nav {
+    overflow-y: scroll;;
+}
+
+.glossary-nav .disabled,
+.glossary-nav *[disabled] {
+    user-select: none;
+    opacity: 0.5;
+}
+
+.glossary-nav a.disabled:hover,
+.glossary-nav a[disabled]:hover,
+.glossary-nav a.disabled:focus,
+.glossary-nav a[disabled]:focus {
+    background-color: inherit;
+    cursor: inherit;
+}
+
+.glossary-nav-pill {
+    margin: 0;
+}
+
+*[fix-on-scroll] {
+    position: absolute;
+}
+
+*[fix-on-scroll].fixed {
+    position: fixed;
+}
+
+.glossary-filter-label {
+    border: none;
+    box-shadow: none;
+}
+
+.glossary-filter-col {
+    padding-left: 0;
+}
+
+section.glossary {
+    margin-bottom: 66%;
+}
+
+

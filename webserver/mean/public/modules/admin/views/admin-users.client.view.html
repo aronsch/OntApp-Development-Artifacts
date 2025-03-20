@@ -1,0 +1,145 @@
+<div ng-init="searchUsers()">
+    <h3>Users <a class="btn btn-primary" href="#!/admin/create-user">Create User</a></h3>
+    <form ng-submit="searchUsers()" novalidate>
+        <div class="input-group">
+            <input class="form-control"
+                   type="text"
+                   ng-model="searchValues.all"
+                   ng-keypress=""
+                   placeholder="search users"/>
+            <span class="input-group-btn">
+        <button class="btn btn-primary" ng-click="searchUsers()">Search</button>
+        </span>
+        </div>
+    </form>
+    <table class="table" ng-class="{ 'table-hover': !selected}">
+        <thead>
+        <tr>
+            <th><span class="sr-only">Status</span></th>
+            <th>Username</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="users.$promise && !users.$resolved">
+            <td colspan="6" class="text-center"><i class="fa fa-lg fa-refresh fa-spin"></i> Loading</td>
+        </tr>
+        <tr ng-repeat="user in users | orderBy: 'nameLastFirst'" class="admin-user-row"
+            ng-class="{ 'text-danger': !user.active, 'info selected': selected.id === user.id }"
+            ng-click="select(user)"
+            ng-hide="selected && selected.id !== user.id">
+            <td title="{{ user.active ? 'Active' : 'Inactive' }}">
+                <i class="fa" ng-class="user.active ? 'fa-user' : 'fa-user-times'"></i>
+                <span class="sr-only">{{ user.active ? 'Active' : 'Inactive' }}</span>
+            </td>
+            <td>{{ user.username }}<span class="text-fade" ng-show="user.id === adminUser.id"> (you)</span></td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ roleNamesForUser(user).join(', ') }}</td>
+        </tr>
+        <tr ng-if="selected">
+            <td colspan="6" class="user-update-form">
+                <form class="form form-horizontal" name="UpdateForm" novalidate>
+                    <div class="alert alert-warning" ng-if="!selected.active">
+                        <i class="fa fa-lg fa-user-times"></i>&nbsp;User is inactive
+                        <div class="pull-right" ng-if="canDeactivate()">
+                            <button class="btn btn-sm btn-success" ng-click="activate()" style="margin-top: -4px;">
+                                Reactivate
+                            </button>
+                        </div>
+                    </div>
+                    <h4 class="col-xs-12">{{ selected.username }}
+                        <small>{{ selected.nameLastFirst }}</small>
+                        <button class="btn btn-sm" ng-click="deselect()"
+                                ng-class="UpdateForm.$dirty ? 'btn-danger' : 'btn-default'">
+                            Cancel
+                        </button>
+                        <button class="btn btn-sm btn-primary" ng-click="update()"
+                                ng-disabled="!UpdateForm.$dirty || UpdateForm.$invalid">
+                            Save
+                        </button>
+                        <div class="pull-right" ng-if="canDeactivate()">
+                            <button class="btn btn-sm btn-warning" ng-click="deactivate()"
+                                    ng-show="selected.active">
+                                Deactivate
+                            </button>
+                        </div>
+                    </h4>
+                    <div class="form-group col-sm-6 col-lg-3">
+                        <label class="col-xs-12" for="username-input">Username</label>
+                        <div class="col-xs-12">
+                            <input id="username-input" class="form-control" type="text" placeholder="username"
+                                   ng-model="selected.username" autocomplete="off" required/>
+                            <p class="help-block" ng-show="errors.username" ng-bind="errors.username.message"></p>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-lg-3">
+                        <label class="col-xs-12" for="email-input">Email</label>
+                        <div class="col-xs-12">
+                            <input id="email-input" class="form-control" type="email" placeholder="email"
+                                   ng-model="selected.email" autocomplete="off" required/>
+                            <p class="help-block text-danger" ng-show="errors.email" ng-bind="errors.email.message"></p>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-lg-3">
+                        <label for="firstname-input" class="col-sm-4 col-lg-12">First Name</label>
+                        <div class="col-sm-8 col-lg-12">
+                            <input id="firstname-input" class="form-control" type="text" placeholder="first name"
+                                   ng-model="selected.firstName" minlength=1 autocomplete="off" required/>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-lg-3">
+                        <label for="lastname-input" class="col-sm-4 col-lg-12">Last Name</label>
+                        <div class="col-sm-8 col-lg-12">
+                            <input id="lastname-input" class="form-control" type="text" placeholder="last name"
+                                   ng-model="selected.lastName" minlength=1 autocomplete="off" required/>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="col-xs-12 col-sm-1 col-lg-12">Roles</label>
+                        <div class="col-xs-12 col-sm-11 col-lg-12">
+                            <div class="list-group">
+                                <a class="list-group-item row"
+                                   ng-repeat="role in roles | orderBy: ['locked', '-canModify', 'name']"
+                                   ng-class="{ 'list-group-item-success': hasRole(role), 'disabled': (role.isDefault || roleLockedForAdmin(role)) }"
+                                   ng-click="toggleRole(role, UpdateForm)">
+                                    <div class="col-xs-11 col-sm-3 user-role-selection-name">
+                                        <i class="fa fa-lg fa-fw"
+                                           ng-class="hasRole(role) ? 'fa-circle text-success' : 'fa-circle-o text-faded'"></i>
+                                        {{ role.name }}
+                                    </div>
+                                    <div class="col-xs-1 col-sm-1 col-sm-push-8 user-role-selection-status-icons text-right">
+                                        <i ng-show="role.isDefault || roleLockedForAdmin(role)"
+                                           class="fa fa-fw fa-lg fa-lock role-lock"></i>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-8 col-sm-pull-1 user-role-selection-info-text">
+                                        <small>
+                                            {{ role.description }}
+                                            <span class="text-info" ng-if="roleLockedForAdmin(role)"><br/>
+                                            <i class="fa fa-fw fa-lg fa-lock role-lock"></i> This role can only be changed by another administrator
+                                            </span>
+                                            <span class="text-info" ng-if="role.isDefault"><br/>
+                                            <i class="fa fa-fw fa-lg fa-lock role-lock"></i> Universal roles cannot be removed
+                                            </span>
+                                        </small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <button class="btn btn-lg btn-primary btn-block" ng-click="update(true)"
+                                ng-disabled="!UpdateForm.$dirty || UpdateForm.$invalid">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

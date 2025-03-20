@@ -1,0 +1,28 @@
+<section ng-controller="RequirementFeedController">
+    <error-alert class="alert-header-buffer"></error-alert>
+    <div class="panel panel-info">
+        <div class="panel-heading"><span class="panel-title">Requirement Activity</span></div>
+        <div class="list-group">
+            <div class="list-group-item" ng-show="!requirements.$resolved" disabled="true">
+                <i class="fa fa-circle-o-notch fa-spin"></i>
+                <span class="sr-only">Loading Requirements Activity Feed</span>
+            </div>
+            <a class="list-group-item small"
+               ng-if="requirements.$resolved"
+               ng-repeat="req in sortedByLastActivity()"
+               ng-click="open(req.Label)">
+                <div class="row">
+                    <span class="col-sm-1">
+                        <i title="{{ req.Properties.modified() ? 'Modified' : 'Created' }}"
+                           class="fa ng-class:{ 'fa-edit': req.Properties.modified(),'fa-pencil': !req.Properties.modified() };"></i>
+                    </span>
+                    <span class="col-sm-6">{{ req.Label }}</span>
+                    <span class="col-sm-4" title="{{ req.Properties.modifiedDateString() }}">
+                        {{ req.Properties.modifiedDateDesc() }}
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</section>

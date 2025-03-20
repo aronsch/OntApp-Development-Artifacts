@@ -1,0 +1,36 @@
+<section class="container-fluid requirement-modal-window">
+    <a class="modal-breadcrumb-link" ng-click="back()" ng-show="modalState.count() > 1">
+        <i class="fa fa-fw fa-chevron-left"></i>Back to <strong>{{ modalState.previous().name }}</strong>
+    </a>
+    <span class="pull-right" ng-hide="requirement.$resolved">
+        <i class="fa fa-refresh fa-spin fa-fw"></i>
+    </span>
+    <div ng-if="requirement.$$ready">
+        <div class="pull-right" ng-show="(authentication.user)">
+            <a class="btn btn-primary"
+               title="Edit this requirement"
+               ng-href="/#!/requirements/{{ requirement.Label | namePathFormat }}/edit"
+               ng-click="close()">
+                <i class="fa fa-pencil"></i>
+            </a>
+        </div>
+        <div>
+            <h3>
+                <a ng-href="#!/requirements/{{ requirement.Label | namePathFormat }}"
+                   ng-click="close('browse to requirement')"
+                   ng-bind="requirement.Label"></a>
+            </h3>
+            <!-- EDITING IS CURRENTLY OPEN TO ALL LOGGED IN USERS -->
+            <!-- TODO: Switch back to restricting editing to author once implemented in ontology -->
+            <!-- <div class="pull-right" ng-show="((authentication.user) && (authentication.user._id == requirement.user._id))"> -->
+        </div>
+        <requirement-description></requirement-description>
+        <hr>
+        <property-list-related-requirements class="no-btm-margin"></property-list-related-requirements>
+        <hr>
+        <property-display></property-display>
+    </div>
+    <div class="text-center text-muted" style="height: 150px; display: block" ng-hide="requirement.$resolved">
+        <i class="fa fa-4x fa-refresh fa-spin" style="margin: auto;"></i>
+    </div>
+</section>

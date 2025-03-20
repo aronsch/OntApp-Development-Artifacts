@@ -1,0 +1,60 @@
+<!-- DERIVED FROM requirement-form.client.view.html -->
+<div class="lead" ng-hide="glossaryEntry.$$ready"><p><i class="fa fa-lg fa-spin fa-refresh"> Loading</i></p></div>
+<form class="form glossaryentry-form" ng-show="glossaryEntry.$$ready" ng-init="d = glossaryEntry;" novalidate>
+    <h2 class="" ng-class="{ 'text-muted': !d.Name() }">
+        {{ d.Name.Value }}
+        <span class="text-fade" style="font-weight: 200" ng-hide="d.Name.length !== 0">glossaryentry name</span>
+        &nbsp;
+    </h2>
+    <div class="form-group row">
+        <glos-form-label text="Name" key="Name"
+                        required-value="d.Name"
+                        class="required-icon" required-icon-prepend label-col></glos-form-label>
+        <small-text-input model="d.Name"
+                          title="Name"
+                          placeholder="glossaryentry name"
+                          input-col></small-text-input>
+    </div>
+    <div class="form-group row">
+        <glos-form-label text="Description" key="Description"
+                        required-value="d.Value"
+                        required-icon-prepend
+                        label-col></glos-form-label>
+        <div input-col>
+            <text-angular name="glossaryentry-value"
+                          serial="glossaryentry-value"
+                          ta-paste="cleanPastedHtml($html)"
+                          ng-model="d.Value"></text-angular>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div input-col input-offset>
+            <button-analyze glossaryentry="glossaryentry"></button-analyze>
+            <button-similar glossaryentry="glossaryentry"></button-similar>
+        </div>
+    </div>
+
+    <!-- Description feedback elements -->
+    <!-- a id="related-glossaryentrys"></a>
+    <div class="row">
+        <glossaryentry-analysis glossaryentry="glossaryentry" input-col input-offset></glossaryentry-analysis>
+    </div>
+    <div class="row">
+        <list-similar-glossaryentrys glossaryentry="glossaryentry" input-col input-offset></list-similar-glossaryentrys>
+    </div -->
+
+    <!-- Rationale field-->
+    <!-- div class="form-group row">
+        <glos-form-label text="Rationale" key="Rationale" req="data" label-col></glos-form-label>
+        <text-angular name="glossaryentry-rationale"
+                      serial="glossaryentry-rationale"
+                      ta-paste="cleanPastedHtml($html)"
+                      ng-model="d.Rationale.Value" input-col></text-angular>
+    </div -->
+
+    <!-- Related glossaryentrys-->
+    <!-- Requirement properties inputs-->
+    <div class="form-group row">
+        <save-glossaryentry-button class="col-xs-12"></save-glossaryentry-button>
+    </div>
+</form>

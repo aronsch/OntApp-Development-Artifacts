@@ -1,0 +1,29 @@
+{
+  "name": "REQS",
+  "version": "0.0.1",
+  "description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js",
+  "dependencies": {
+    "bootstrap": "~3.3.7",
+    "angular": "~1.6.1",
+    "angular-aria": "",
+    "angular-resource": "",
+    "angular-mocks": "",
+    "angular-cookies": "",
+    "angular-animate": "",
+    "angular-sanitize": "",
+    "angular-touch": "",
+    "angular-ui-utils": "",
+    "angular-ui-router": "0.4.2",
+    "angular-bootstrap": "2.5.0",
+    "jquery": "~2.1.4",
+    "underscore": "~1.8",
+    "moment": "~2.17.1",
+    "font-awesome": "4.7.0",
+    "angular-scroll": "^1.0.0",
+    "Caret.js": "~0.2.2",
+    "angular-froala": "^2.6.1"
+  },
+  "resolutions": {
+    "angular": "~1.6.1"
+  }
+}

@@ -1,0 +1,77 @@
+<div>
+    <form class="form"
+          id="picker-search" novalidate>
+        <div class="form-group form-inline">
+
+            <label for="picker-search-input"
+                   class="sr-only">
+                Requirement Search
+            </label>
+            <input type="text"
+                   class="form-control"
+                   id="picker-search-input"
+                   ng-model="searchState.searchModel.Properties.GeneralSearchTerm.Value"
+                   ng-keydown="$event.keyCode === 13 ? searchState.search() : null; $event.keyCode === 13 ? $event.preventDefault() : null;"
+                   placeholder="search requirements"/>
+            <button class="btn btn-info btn-sm" ng-click="searchState.search()">
+                <i class="fa fa-search"></i> Search
+            </button>
+            <button class="btn btn-sm btn-default" ng-show="searchState.requirements"
+                    ng-click="searchState.resetAll();">
+                <i class="fa fa-close"></i> Done
+            </button>
+        </div>
+    </form>
+    <ul class="list-group">
+        <!-- Loading Icon Display -->
+        <li class="list-group-item small"
+            ng-show="searchState.isLoading()">
+            <i class="fa fa-refresh fa-spin text-muted"></i>
+        </li>
+        <!-- No Results Message -->
+        <li class="list-group-item small alert alert-warning"
+            ng-show="!searchState.isLoading() && searchState.requirements.length === 0">
+            <span ng-if="searchState.searchModel.Properties.GeneralSearchTerm.Value.length">
+                No Requirements Matching &ldquo;<strong>{{ searchState.searchModel.Properties.GeneralSearchTerm.Value }}</strong>&rdquo; Found</span>
+            <span ng-if="searchState.searchModel.Properties.GeneralSearchTerm.Value.length === 0">No Requirements Found</span></li>
+        <!-- Requirements Search Results List Items
+        - Hide result if it's already attached as a Super-requirement (SubReq and SuperReq are exclusive.)
+        - When editing, hide result it is the Requirement being edited.
+        -->
+        <li class="list-group-item small"
+            ng-repeat="item in searchState.requirements"
+            ng-hide="item.IRI === requirement.IRI || requirement.Properties.hasRelatedRequirement(item)">
+                <h4 class="list-group-item-heading">
+                    <!-- Requirement Attach -->
+                    <!-- SuperRequirement -->
+                    <button class="btn btn-sm btn-default"
+                            ng-if="relation === 'SuperRequirement'"
+                            title="Attach {{ relation }}"
+                            ng-click="requirement.Properties.addRelatedRequirement(item, relation, subClass); searchState.resetAll();">
+                        Attach<span class="visible-md visible-lg"> {{ relation }}</span>
+                    </button>
+                    <!-- SubRequirement -->
+                    <button class="btn btn-sm btn-default"
+                            ng-if="relation !== 'SuperRequirement' && !attachWithSubclass"
+                            title="Attach SubRequirement {{ relation }}"
+                            ng-click="requirement.Properties.addRelatedRequirement(item, relation, subClass)">
+                        Attach<span class="visible-md visible-lg"> {{ relation }}</span>
+                    </button>
+                    <span ng-hide="attachWithSubclass && relation !== 'SuperRequirement'">&nbsp;</span>
+                    <span class="req-title-expand-desc">{{ item.Label }}</span>
+                </h4>
+            <p class="list-group-item-text"
+               ng-bind-html="item.Properties.Description.Value"></p>
+            <p ng-show="attachWithSubclass && relation !== 'SuperRequirement'">
+                <!-- SubRequirement with SubClass Specification-->
+                <button class="btn btn-sm btn-default btn-block"
+                        ng-if="attachWithSubclass && relation !== 'SuperRequirement'"
+                        ng-repeat="subtype in searchState.subtypes.Properties"
+                        title="Attach {{ relation }} {{ subtype.Label }}"
+                        ng-click="requirement.Properties.addRelatedRequirement(item, relation, subtype.Label)">
+                    Satisfies {{ subtype.Label }}
+                </button>
+            </p>
+        </li>
+    </ul>
+</div>

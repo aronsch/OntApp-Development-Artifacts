@@ -1,0 +1,14 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li ng-class="{ 'active': isActive('admin.users') }"><a href="#!/admin/users">Users</a></li>
+                <li ng-class="{ 'active': isActive('admin.roles') }"><a href="#!/admin/roles">Roles</a></li>
+                <li ng-class="{ 'active': isActive('admin.createUser') }"><a href="#!/admin/create-user">Create User</a>
+                <li ng-class="{ 'active': isActive('admin.backup') }"><a href="#!/admin/backup">Export</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div ui-view></div>

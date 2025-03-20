@@ -1,0 +1,8 @@
+<button class="btn btn-lg btn-block btn-primary requirement-button-update"
+        ng-click="update()"
+        ng-disabled="!requirement.Properties.hasName() || !requirement.Properties.hasDescription()">
+    Update
+    <i class="fa fa-fw fa-lg"
+       ng-class="{ 'fa-save': requirement.$resolved, 'fa-circle-o-notch fa-spin': !requirement.$resolved }">
+    </i>
+</button>

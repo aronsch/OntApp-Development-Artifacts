@@ -1,0 +1,69 @@
+.user-update-form {
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    box-sizing: border-box !important;
+    padding-right: inherit;
+}
+
+.user-update-form h4 {
+    margin-top: 0;
+}
+
+.role-permission-label {
+    display: inline-block;
+    margin-right: 4px;
+    font-size: 90%;
+}
+
+.role-lock.fa-lock {
+    margin-top: 5px;
+}
+
+dl.permission-list {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 5px 0 5px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+dl.permission-list:first-of-type {
+    padding-top: 0;
+}
+
+dl.permission-list:last-of-type {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.label-role-edit-permission {
+    background-color: #b774b8;
+}
+
+.role-name-strong {
+    font-weight: bold;
+}
+
+.admin-toggle .fa-check-square-o:before {
+    margin-right: -3px;
+}
+
+.user-role-selection-name {
+    padding-left: 0;
+}
+.user-role-selection-info-text {
+}
+.user-role-selection-status-icons {
+    padding-right: 0;
+}
+
+.role-mgr-role-desc {
+
+}
+
+td.role-mgr-title-desc {
+    width: 40%;
+}
+
+.role-mgr-permissions {
+    width: 60%
+}

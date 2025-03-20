@@ -1,0 +1,8 @@
+.idea/
+mongodb/mongo_data
+parliament/data
+parliament/logs
+*.log
+ontserver/tmp/
+ontserver/warfile/
+*.pem

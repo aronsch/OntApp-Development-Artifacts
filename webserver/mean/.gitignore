@@ -1,0 +1,11 @@
+.DS_Store
+.nodemonignore
+.sass-cache/
+npm-debug.log
+node_modules/*
+!node_modules/swig
+public/lib/*
+!public/lib/At.js
+app/tests/coverage/
+.bower-*/
+.idea/

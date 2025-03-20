@@ -1,0 +1,8 @@
+<button class="btn btn-info requirement-button-similar requirement-form-group-button"
+        ng-click="findSimilar(requirement)"
+        ng-disabled="!requirement.Properties.canFindSimilar()">
+    <i class="fa fa-fw"
+       ng-class="similar && !similar.$resolved ? 'fa-refresh fa-spin' : 'fa-search'">
+    </i>
+    Find Similar<span class="hidden-xs"> Requirements</span>
+</button>

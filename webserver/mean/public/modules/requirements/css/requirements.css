@@ -1,0 +1,511 @@
+.requirement-analysis {
+    margin-top: 4px;
+}
+
+.requirement-analysis-alert-dismiss {
+    cursor: pointer;
+}
+
+requirement-form {
+    display: block;
+    padding-bottom: 30px;
+}
+
+.requirement-btn-save {
+    width: 100% !important;
+}
+
+.requirement-analysis-alert-dismiss:hover {
+    color: #333 !important;
+}
+
+.requirement-analysis-offender {
+    font-weight: bold;
+}
+
+.requirement-form-button,
+.requirement-form-group-button {
+    margin-right: 4px;
+}
+
+.requirement-form-button.btn-lg {
+    margin-top: 30px;
+}
+
+.requirement-form-float-buttonrow {
+    position: fixed;
+    height: 66px;
+    bottom: 0;
+    padding: 14px 14px 20px 14px;
+    background-color: rgba(255, 255, 255, 0.93);
+    border: 1px #CCCCCC solid;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+form.requirement-form-floating-buttonrow {
+    padding-bottom: 72px;
+}
+
+.requirement-property-title {
+    cursor: help;
+}
+
+.requirement-list {
+
+}
+
+@media (max-width: 550px) {
+    .requirements-list-controls {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .requirements-list-controls-sorting {
+        clear: right;
+    }
+
+    .requirements-list-controls-folding {
+        clear: left;
+    }
+}
+
+.requirement-list-item-controls {
+    display: block;
+}
+
+.requirement-list-item-controls.oa-control-margin {
+    margin-bottom: 0.5em;
+}
+
+.related-display-list-item {
+
+}
+
+.requirement-list-item-content {
+}
+
+.term-link,
+.term-link:visited,
+.term-link:active,
+.term-link:focus,
+.term-link:hover {
+    text-decoration: none;
+    color: inherit;
+    border-bottom: solid rgba(91, 192, 222, 0.45) 2px;
+    background-color: rgba(91, 192, 222, 0);
+    transition: background-color 250ms, border-bottom 155ms;
+    padding: 0 2px 0 2px;
+    margin: 0 -2px 0 -2px;
+}
+
+.term-link:hover {
+    border-bottom: solid rgba(91, 192, 222, 1) 5px;
+    background-color: rgba(91, 192, 222, 0.45);
+}
+
+div[contenteditable] span[glossary-term] {
+    background-color: rgba(91, 192, 222, 0.35);
+    padding: 0 4px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.requirement-modal-window {
+    padding: 18px 24px;
+}
+
+.term-link-list {
+}
+
+.modal-breadcrumb-link {
+    padding-top: 6px;
+    display: inline-block;
+    min-width: 50%;
+}
+
+.modal-breadcrumb-link.small {
+    font-size: 80%;
+}
+
+.requirement-description > p:last-child {
+    margin-bottom: 0;
+}
+
+.req-title-expand-desc {
+    cursor: pointer;
+    display: inline-block;
+}
+.requirements-list-title {
+    margin-top: 0;
+}
+
+.requirements-list {
+    transition: opacity 0ms;
+    opacity: 1;
+}
+
+.requirements-list.ng-hide {
+    transition: opacity 100ms;
+    opacity: 0;
+}
+
+.requirements-list-controls.ng-hide-add {
+    transition: opacity 100ms;
+    opacity: 100;
+}
+
+.requirements-list-controls.ng-hide {
+    transition: opacity 100ms;
+    opacity: 0;
+}
+
+/* Touch Devices */
+body.oa-touch-device .requirements-list-controls span.oa-tinybutton {
+    font-size: 133% !important;
+}
+
+.requirement-property-list {
+    opacity: 100;
+}
+
+.requirement-property-list.ng-hide {
+
+}
+
+.requirement-form-label {
+    white-space: nowrap;
+}
+
+.requirement-option-button {
+
+}
+
+.related-list-icon {
+    position: relative;
+    right: 2em;
+    width: 0;
+}
+
+.requirement-form-label-icon {
+    margin-right: 0.15em;
+}
+
+.requirement-related-list {
+
+}
+
+.requirement-interrogative {
+    background-color: rgb(245, 245, 245);
+    border-radius: 5px;
+}
+
+.ta-scroll-window > .ta-bind,
+.ta-editor.ta-html,
+.ta-scroll-window.form-control {
+    min-height: 100px !important;
+}
+
+.ta-scroll-window.form-control {
+}
+
+property-list-related-requirements.no-btm-margin dl {
+    margin-bottom: 0;
+}
+
+.no-btm-margin {
+    margin-bottom: 0 !important;
+}
+
+.no-top-margin {
+    margin-top: 0 !important;
+}
+
+div.modal-dialog {
+    z-index: 1000 !important;
+}
+
+.search-popover-results-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.popover-search-form {
+    margin-bottom: 6px;
+}
+
+.requirement-interrogative.floatpanel {
+
+}
+
+@media (min-height: 550px) {
+    .requirement-interrogative.floatpanel {
+        position: fixed;
+        bottom: 66px;
+        max-height: 50%;
+        overflow-y: auto;
+        padding-bottom: 18px;
+    }
+}
+
+.text-fade {
+    opacity: 0.5;
+}
+
+.full-width button,
+.btn.full-width,
+button.full-width {
+    width: 100%;
+}
+
+.comment-list {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.glossary-list {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.req-name-field {
+    border: 1px solid #e7e7e7;
+    padding: 6px 12px;
+    background-color: #f2f2f2;
+    border-radius: 4px;
+}
+
+req-form-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-big-btn {
+    font-weight: 200;
+}
+
+.search-col {
+    border: #337ab7 solid;
+    border-width: 1px 4px 1px 1px;
+    border-radius: 4px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.searchform-status-count {
+    display: block;
+    opacity: 1;
+}
+
+.searchform-status-count.ng-enter {
+    transition: all 200ms ease-out;
+    opacity: 0;
+    transform: translateY(-25px);
+}
+.searchform-status-count.ng-enter.ng-enter-active {
+    opacity: 1;
+    transform: translateY(0px);
+}
+.searchform-status-count.ng-leave {
+    transition: all 200ms ease-in;
+    opacity:1;
+    transform: translateY(0px);
+}
+
+.searchform-status-count.ng-leave.ng-leave-active {
+    opacity:0;
+    transform: translateY(-25px);
+}
+
+
+
+
+
+*[ng-click] {
+    cursor: pointer;
+}
+
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    visibility: hidden !important;
+}
+
+@keyframes left-bounce {
+    0% {
+        transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(3px);
+    }
+}
+
+.float-cols {
+    position: relative;
+}
+.col-float {
+    position: absolute;
+    top: 0;
+}
+
+.col-float-right {
+    right: 0;
+}
+
+.search-col .fa-chevron-right,
+.search-col .fa-chevron-left,
+.search-hide-anim {
+    transition: 300ms transform cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+span.search-hide-anim {
+    display: inline-block;
+}
+
+.search-col .fa-chevron-right.ng-hide {
+    transform: rotate(-180deg);
+}
+
+.search-col * {
+    transition: 115ms opacity ease-in-out;
+}
+.search-col *.ng-hide {
+    opacity: 0;
+}
+.search-col *.ng-hide.ng-hide-add {
+    transition-duration: 0ms;
+    opacity: 0;
+}
+
+.search-col .fa-chevron-left.ng-hide {
+    transform: rotate(180deg);
+
+}
+
+.search-hidden .search-hide-bounce {
+    transform: translateY(6px);
+}
+
+.search-col .fa-chevron-right.ng-hide.ng-hide-add,
+.search-col .fa-chevron-left.ng-hide.ng-hide-add,
+.search-visible .search-hide-bounce {
+    transition-duration: 0ms;
+}
+
+.picker-right {
+    padding-top: 15px;
+    padding-bottom: 4px;
+    border-radius: 4px;
+    background-color: #f7f7f7;
+    border: #e7e7e7 solid;
+    border-width: 1px 1px 1px 4px;
+    transition: 115ms all ease-in-out;
+}
+
+.picker-right.ng-hide {
+    transform: translateX(50px);
+    opacity: 0;
+}
+
+/* Requirement Form Addl Options */
+
+.requirement-form-addl-opts-title {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.requirement-form-status-muted {
+    opacity: 0.5;
+}
+
+.requirement-form-addl-opts:hover .requirement-form-status-muted {
+    opacity: 0.70;
+}
+
+div.requirement-form-addl-opts-icons,
+.requirement-form-addl-opts-related {
+    opacity: 1;
+    transition: transform 100ms ease-out 50ms, opacity 100ms ease-out 50ms ;
+    display: inline-block;
+    transform: translateY(0px);
+}
+div.requirement-form-addl-opts-icons.ng-hide,
+.requirement-form-addl-opts-related.ng-hide {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.requirement-form-addl-opts-related-status {
+    display: inline-block;
+    margin-right: 0.5em;
+}
+.requirement-form-addl-opts-related-status:last-of-type {
+    margin-right: 0;
+}
+
+.requirement-form-addl-opts > .panel-heading > .panel-title > a:hover,
+.requirement-form-addl-opts > .panel-heading > .panel-title > a:focus
+{
+    text-decoration: none !important;
+}
+
+.animate-fa-rotation {
+    transition: transform 150ms ease-in;
+}
+
+.requirement-form-addl-opts.panel-primary .panel-heading:hover {
+    background-color: #265a88 !important;
+}
+
+.requirement-form-addl-opts-arrow {
+    margin-right: 0.25em;
+    margin-left: 0.15em;
+}
+
+.search-criteria-badge {
+    margin-right: 2px;
+}
+
+.panel-heading .btn {
+    margin-top: -8px;
+}
+/* advanced search badge formatting */
+.badge.allow-linebreak {
+    white-space: normal;
+    text-align: right;
+}
+
+.badge.allow-linebreak i.fa-close {
+    display: block;
+}
+
+.badge.allow-linebreak .advanced-search-badge-label {
+    float: left;
+}
+
+.badge.allow-linebreak .advanced-search-badge-value {
+    float: right;
+}
+.requirement-search-result-section-btn .fa {
+    transition: transform 125ms ease-in-out;
+}
+.requirement-search-result-section {
+    margin-top: 6px;
+    padding: 6px 6px 6px 8px;
+    border-radius: 6px;
+    background-color: #f8f8f8;
+    border-left: 3px #5bc0de solid;
+    position: relative;
+}
+.requirement-search-result-section-title {
+    margin-top: 0;
+    font-weight: 700;
+}
+
+.requirement-search-result-section-control {
+    position: absolute;
+    background-color: lightgrey;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}

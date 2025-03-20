@@ -1,0 +1,101 @@
+<form class="form requirement-form"
+      name="searchform"
+      ng-if="searchState.searchModel.Properties"
+      novalidate>
+    <div class="form-group form-group-lg row" ng-init="searchState.setForm(searchform);">
+        <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+            <label class="sr-only" for="GeneralSearchTerm">Search Term</label>
+            <input id="GeneralSearchTerm"
+                   class="form-control input-lg requirement-search-input"
+                   type="text"
+                   placeholder="Simple (conjunctive) Search on Requirement Names or Descriptions"
+                   ng-model="searchState.searchModel.Properties.GeneralSearchTerm.Value"
+                   focus-when="searchState.models.resolved"
+                   uib-typeahead="term for term in searchState.typeahead | filter:$viewValue | limitTo:8">
+        </div>
+        <search-button class="hidden-xs col-sm-3 col-md-2 col-lg-2 full-width"></search-button>
+    </div>
+    <!-- xs viewport button -->
+    <div class="form-group row visible-xs">
+        <search-button class="col-xs-12 full-width"></search-button>
+    </div>
+    <!-- Requirement properties inputs-->
+    <div class="row">
+        <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+            <div class="panel panel-primary">
+                <div class="panel-heading" role="button"
+                     title="{{ searchState.showAdvanced ? 'Close': 'Open' }} Advanced Search Options"
+                     ng-click="searchState.toggleShowAdvanced()">
+                    <h2 class="panel-title"><i class="fa fa-fw fa-sliders"></i> Advanced Search
+                        <i class="fa fa-fw fa-lg animate-fa-rotation"
+                           ng-class="searchState.showAdvanced ? 'fa-chevron-right fa-rotate-90 search-form-advanced' : 'fa-chevron-right search-form-simple'"></i>
+                        <button class="btn btn-danger pull-right"
+                                ng-show="searchState.advanced()"
+                                ng-click="searchState.clearAdvanced(); $event.stopPropagation();">
+                            <i class="fa fa-close"></i>
+                            Clear<span class="sr-only"> Advanced Search</span>
+                        </button>
+                    </h2>
+                </div>
+                <div class="panel-body" ng-show="searchState.showAdvanced">
+                    <fieldset>
+                        <div class="form-group row"
+                             ng-repeat="(key, prop) in searchState.searchModel.Properties"
+                             title="{{prop.PropertyDescription}}"
+                             ng-if="key !== 'GeneralSearchTerm'">
+                            <req-form-label text="{{ prop.Label }}" key="{{ key }}"
+                                            class="col-xs-12 col-sm-4"></req-form-label>
+                            <div class="col-xs-12 col-sm-8" ng-init="clickFn = searchState.updateAdvancedPropsList.bind(searchState)">
+                                <div ng-if="prop.isSmallText() || prop.isLargeText()">
+                                    <input type="text" class="form-control" ng-model="d[key].Value">
+                                </div>
+                                <div ng-if="settings.search.forceDropdownElForKeys.test(key)">
+                                    <div class="btn-group">
+                                        <input-dropdown></input-dropdown>
+                                    </div>
+                                </div>
+                                <div ng-if="prop.isMultiselect() || prop.isBoolean()">
+                                    <div class="btn-group">
+                                        <input-dropdown-buttons></input-dropdown-buttons>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="panel-footer" ng-show="searchState.showAdvanced">
+                    <div class="">
+                        <search-button class=""></search-button>
+                        <button class="btn btn-danger btn-lg pull-right"
+                                ng-show="searchState.advanced()"
+                                ng-click="searchState.clearAdvanced(); $event.stopPropagation();">
+                            <i class="fa fa-close"></i>
+                            Clear<span class="sr-only"> Advanced Search</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-footer" ng-if="(searchState.advanced() && searchState.current()) && searchState.advancedPropsList.length > 0">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-2">Current Criteria</div>
+                        <div class="col-xs-12 col-sm-10">
+                        <span class="badge search-criteria-badge"
+                              ng-repeat="prop in searchState.advancedPropsList" ng-if="prop.value"
+                              ng-class="prop.value.length > 100 ? 'allow-linebreak' : '' ">
+                            <span class="advanced-search-badge-label">{{ prop.name }}:&nbsp;</span>
+                            <span class="advanced-search-badge-value" ng-bind-html="prop.value"></span>
+                            <i class="fa fa-close" ng-click="searchState.clearAdvancedProperty(prop.key)"></i>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 text-center">
+            <p class="panel-heading text-info">
+                <span ng-if="searchState.requirements.$resolved && !error" class="searchform-status-count">
+                <strong>{{ searchState.resultCount() }}</strong> Result{{ searchState.requirements.length === 1 ? '' : 's' }}
+                </span>
+            </p>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,22 @@
+<div class="row" class="requirement-related-list">
+    {{ $tooltip }}
+    <dl class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-if="requirement.Properties.superRequirements().length">
+        <dt class="requirement-property-title"
+            title="{{ requirement.Properties.RelatedRequirements.PropertyDescription }}">
+            <i class="fa fa-fw {{ settings.iconClass.SuperRequirement }}"></i>Super-Requirements
+        </dt>
+        <dd ng-repeat="item in requirement.Properties.superRequirements() track by $index" class="related-display-list-item">
+            <i class="fa fa-fw"></i><a ng-click="openRequirementModal(item.Label)">{{ item.Label }}</a>
+        </dd>
+    </dl>
+    <dl class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-if="requirement.Properties.subRequirements().length">
+        <dt class="requirement-property-title"
+            title="{{ requirement.Properties.RelatedRequirements.PropertyDescription }}">
+            <i class="fa fa-fw {{ settings.iconClass.SubRequirements }}"></i>Sub-Requirements
+        </dt>
+        <dd ng-repeat="item in requirement.Properties.subRequirements() track by $index">
+            <i class="fa fa-fw"></i><a ng-click="openRequirementModal(item.Label)">{{ item.Label }} <span
+                class="small text-muted">{{ item.Subtype }}</span> </a>
+        </dd>
+    </dl>
+</div>

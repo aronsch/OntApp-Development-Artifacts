@@ -1,0 +1,22 @@
+<section ng-controller="HomeController">
+    <div class="row">
+        <div class="col-xs-12 jumbotron text-center" ng-show="!authentication.user">
+            <div class="row">
+                <h1>es REQS<i class="fa fa-fw fa-share-alt"></i></h1>
+                <p class="lead">
+                    Requirements Development and Analysis 
+                </p>
+            </div>
+            <div class="row">
+                <h2><a class="lead alert alert-info" href="/#!/signin">
+                    Sign In to Continue<i class="fa fa-lg fa-fw fa-sign-in"></i>
+                </a></h2>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="authentication.user" style="margin-top: 1.15em">
+        <div class="col-xs-12"
+             ng-include="'modules/requirements/views/start-page.client.view.html'">
+        </div>
+    </div>
+</section>

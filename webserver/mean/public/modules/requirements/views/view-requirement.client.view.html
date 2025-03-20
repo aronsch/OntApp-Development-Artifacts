@@ -1,0 +1,51 @@
+<section ng-controller="RequirementController" ng-init="findOneForDisplay()">
+    <error-alert class="alert-header-buffer"></error-alert>
+    <div ng-if="requirement.$resolved && !(error && error.status === 404)" ng-cloak>
+        <div class="pull-right" ng-show="(authentication.user)">
+            <button-interrogate ng-if="authentication.user.permissions.requirements.canEdit"></button-interrogate>
+            <a class="btn btn-lg btn-primary" style="vertical-align: top"
+               role="button"
+               title="Edit this requirement"
+               ng-href="/#!/requirements/{{requirement.Label | namePathFormat}}/edit"
+               ng-if="authentication.user.permissions.requirements.canEdit"
+               ng-hide="requirement._locked">
+                <i class="fa fa-fw fa-lg fa-pencil"></i>
+                <span class="sr-only">Edit</span>
+            </a>
+            <div class="btn btn-lg btn-primary"
+                 role="button"
+                 ng-show="requirement._locked"
+                 ng-if="authentication.user.permissions.requirements.canEdit"
+                 title="Currently being edited by another user" disabled>
+                <i class="fa fa-fw fa-lg fa-lock"></i>
+            </div>
+            <div role="button"
+                 ng-if="authentication.user.permissions.requirements.canDeactivate"
+                 title="Deactivate requirement"
+                 ng-click="toggleActive()"
+                 class="btn btn-lg ng-class:{'btn-warning':requirement.Active,'btn-success':!requirement.Active}">
+                <i class="fa ng-class:{'fa-power-off':requirement.Active,'fa-arrow-up':!requirement.Active}"></i>
+            </div>
+        </div>
+        <div class="page-header" ng-init="models.extendRequirement(requirement)">
+            <h1 ng-bind="requirement.Label"></h1>
+        </div>
+        <div ng-if="!requirement.Active" class="alert alert-warning">
+            Requirement is inactive. <strong><a ng-click="toggleActive()">Reactivate</a></strong>
+        </div>
+        <requirement-description class="lead"></requirement-description>
+        <hr>
+        <property-list-related-requirements ng-if="requirement.Properties.RelatedRequirements.Value.length"
+                                            class="no-btm-margin"></property-list-related-requirements>
+        <p ng-show="!requirement.Properties.RelatedRequirements.Value.length" class="text-muted">
+            This requirement currently has no related requirement set.
+            <a class="btn btn-sm btn-default" ng-href="/#!/requirements/{{ requirement.Label | namePathFormat }}/edit">Attach Related Requirements</a>
+        </p>
+
+        <hr>
+        <property-display></property-display>
+        <hr>
+	<!-- glossary></glossary --> 
+        <comments></comments>
+    </div>
+</section>

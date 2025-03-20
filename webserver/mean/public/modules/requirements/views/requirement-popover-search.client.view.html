@@ -1,0 +1,65 @@
+<div ng-init="pickerState = searchStateSvc.register(relation + subtype + 'RequirementPicker')">
+    <form class="popover-search-form"
+          ng-submit="find(pickerState)">
+        <span class="form-group-sm">
+            <label for="{{ relation }}-{{ subtype }}-search-input"
+                   class="sr-only">
+                Requirement Search
+            </label>
+            <input type="text"
+                   id="{{ relation }}-{{ subtype }}-search-input"
+                   class="form-control"
+                   ng-model="pickerState.searchModel.Properties.GeneralSearchTerm.Value"
+                   placeholder="search requirements"/>
+        </span>
+    </form>
+    <ul class="list-unstyled search-popover-results-list">
+        <!-- Loading Icon Display -->
+        <li class="text-center"
+            ng-show="pickerState.requirements && !pickerState.requirements.$resolved">
+            <i class="fa fa-refresh fa-spin text-muted"></i>
+        </li>
+        <!-- Requirements Search Results List Items
+        - Hide result if it's already attached as a Super-requirement (SubReq and SuperReq are exclusive.)
+        - When editing, hide result it is the Requirement being edited.
+        -->
+        <li class="requirement-edit-related-item"
+            ng-repeat="item in pickerState.requirements"
+            ng-init="added = requirement.Properties.hasRelatedRequirement(item); isSuper = requirement.Properties.hasSuperRequirement(item)"
+            ng-hide="item.IRI === requirement.IRI || isSuper">
+            <span class="requirement-edit-related-tag" >
+                <!-- Control - Attach as SubRequirement -->
+                <a title="{{ added ? 'This requirement is already attached' : 'Attach this requirement' }}"
+                   class="requirement-edit-add-related-related pull-left"
+                   ng-click="requirement.Properties.addRelatedRequirement(item, relation, subtype);
+                            added = requirement.Properties.hasRelatedRequirement(item)">
+                    <i class="fa"
+                       ng-class="{ 'fa-plus text-primary': !added, 'fa-check text-success': added }"></i>
+                </a>
+                &nbsp;
+                <!-- Search Result Title - link opens modal view of specified Requirement -->
+                <a ng-click="openRequirementModal(item.IRI)"
+                   ng-class="{ 'text-muted': added }">
+                    {{ item.Label }}
+                </a>
+            </span>
+            <span class="requirement-edit-related-tag" ng-show="isSuper">
+                <span class="small muted">
+                    <i class="fa {{ settings.iconClass['SuperRequirement'] }}"></i>&nbsp;
+                    SuperRequirement
+                </span><br>
+                <i class="fa fa-ban text-danger"></i>&nbsp;
+                {{ item.Label }}
+            </span>
+        </li>
+    </ul>
+
+    <!-- Control - Close Search Popover-->
+    <button class="btn btn-sm btn-default btn-block" ng-click="popover.open = false">
+        Done
+    </button>
+    <!-- TODO: Modal Create Control-->
+    <button class="btn btn-sm btn-default btn-block" ng-click="openCreationModal()">
+        Create
+    </button>
+</div>

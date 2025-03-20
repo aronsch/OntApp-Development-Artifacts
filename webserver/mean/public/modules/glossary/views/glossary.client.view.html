@@ -1,0 +1,210 @@
+<section class="container header-buffer glossary" ng-controller="GlossaryController">
+    <h3>
+        <span class="pull-right text-success">
+                <i class="fa fa-pull-right fa-fw fa-2x fa-check glossary-add-entry-check" ng-show="saved"></i>
+            </span>
+        <span ng-show="glossary.$resolved"><strong class="text-info">{{ glossary.length }}</strong>
+                    Glossary Entries
+                </span>
+        <span ng-hide="glossary.$resolved"><i class="fa fa-circle-o-notch fa-spin"></i> Loading</span>
+        <!-- Filter Input -->
+    </h3>
+    <div class="row">
+        <div class="col-xs-2 col-sm-1">
+            <div class="form-control form-inline glossary-filter-label">
+                <label for="filter-input">Filter</label>
+            </div>
+        </div>
+        <div class="col-xs-10 col-sm-5 glossary-filter-col">
+            <div class="form-group form-inline">
+                <input id="filter-input" type="text" ng-model="filterText" ng-change="filter()"
+                       class="form-control" placeholder="type to filter"/>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 text-right form-group">
+            <button class="hidden-xs btn btn-primary"
+                    ng-if="user.permissions.glossary.canCreate"
+                    ng-click="initGlossaryEntry(); toggleAdding()" ng-disabled="adding">
+                <i class="fa fa-lg fa-pencil-square-o"></i>Add Entry
+            </button>
+            <button class="visible-xs btn btn-primary btn-block"
+                    ng-if="user.permissions.glossary.canCreate"
+                    ng-click="initGlossaryEntry(); toggleAdding()" ng-disabled="adding">
+                <i class="fa fa-lg fa-pencil-square-o"></i>Add Entry
+            </button>
+
+        </div>
+    </div>
+    <!--New Glossary Entry Form-->
+    <div class="clearfix panel panel-primary" ng-if="adding && user.permissions.glossary.canEdit">
+        <div class="panel-heading">
+                        <span role="button" class="fa-stack fa-pull-right panel-close-btn" ng-click="cancelAdding()">
+                          <i class="fa fa-circle-o fa-stack-2x"></i>
+                          <i class="fa fa-close fa-stack-1x"></i>
+                        </span>
+            <h4 class="panel-title">Add Glossary Entry</h4>
+        </div>
+        <div class="panel-body">
+            <form name="glossaryform" class="form">
+                <div class="form-group">
+                    <label for="new-g-entry-name">Name</label>
+                    <input type="text" id="new-g-entry-name" class="form-control"
+                           ng-model="glossaryEntry.Name" focus-when="adding"/>
+                </div>
+                <div class="form-group">
+                    <label for="new-g-entry-value">Definition</label>
+                    <textarea froala="froalaOptions" id="new-g-entry-value" ng-model="glossaryEntry.Value"></textarea>
+                </div>
+                <p class="alert alert-danger small" ng-show="glossaryEntry.$error"
+                   ng-bind-html="glossaryEntry.$error.data">
+                </p>
+                <button class="btn btn-primary btn-block" ng-click="create()"
+                        ng-disabled="!glossaryEntry.Value.length">
+                    Add Glossary Entry
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 col-sm-1">
+            <ul class="nav nav-pills nav-stacked glossary-nav" ng-if="glossary.length" fix-on-scroll fix-start="60">
+                <li role="presentation"
+                    class="text-center glossary-nav-pill"
+                    ng-repeat="letter in 'abcdefghijklmnopqrstuvwxyz'.split('')"
+                    du-scrollspy="{{ letter }}">
+                    <a du-smooth-scroll="{{ letter }}"
+                       ng-show="grouped[letter].length"><strong>{{ letter }}</strong></a>
+                    <a ng-hide="grouped[letter].length"
+                       class="text-muted"
+                       ng-disabled="!grouped[letter].length">{{ letter }}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-10 col-sm-11">
+            <!--/New Glossary Entry Form-->
+            <div class="list-group glossary-entry-list">
+                <!--Glossary Entry-->
+                <!--Template: Glossary Entry Buttons-->
+                <script type="text/ng-template" id="glossaryEntryButtons.html">
+                    <!--Trigger Edit-->
+                    <a class="btn btn-sm btn-primary" style="vertical-align: top" role="button"
+                       title="Edit this glossary entry"
+                       ng-hide="entry.editing() || entry.needsDefinition()"
+                       ng-click="entry.edit()">
+                        <i class="fa fa-fw fa-lg fa-pencil"></i><span class="sr-only">Edit Glossary Entry</span>
+                    </a>
+                    <a class="btn btn-sm btn-info" style="vertical-align: top" role="button"
+                       title="Add a definition for this glossary entry"
+                       ng-show="entry.needsDefinition() && !entry.editing()"
+                       ng-click="entry.edit()">
+                        <i class="fa fa-fw fa-lg fa-pencil"></i>
+                        <span class="sr-only">Define</span>
+                    </a>
+                    <!--/Trigger Edit-->
+                    <!--Close Edit-->
+                    <a class="btn btn-sm btn-primary" style="vertical-align: top"
+                       title="Edit this glossary entry"
+                       ng-show="entry.editing()"
+                       ng-click="update(entry)">
+                        Save<span class="hidden-xs hidden-sm"> Changes</span>
+                    </a>
+                    <a class="btn btn-sm btn-danger" style="vertical-align: top"
+                       title="Cancel editing this entry"
+                       ng-show="entry.editing()"
+                       ng-click="entry.cancelEditing()">
+                        <i class="fa fa-fw fa-lg fa-close"></i>
+                        <span class="sr-only">Cancel</span>
+                    </a>
+                    <!--/Close Edit-->
+                </script>
+                <!--/Template: Glossary Entry Buttons-->
+                <section ng-repeat="(letter, group) in grouped" id="{{ letter }}" ng-if="group.length"
+                         du-scrollspy>
+                    <!--Column Headings-->
+                    <div class="list-group-item row glossary-section-head text-primary text-left">
+                        <h4 class="col-xs-12 col-sm-1 glossary-section-title">{{ letter.toUpperCase() }}</h4>
+                        <div class="hidden-xs col-sm-2 text-right"><strong>Term</strong></div>
+                        <div class="hidden-xs col-sm-6"><strong>Definition</strong></div>
+                        <div class="hidden-xs col-sm-3"><strong>Used By</strong></div>
+                    </div>
+                    <!--/Column Headings-->
+                    <div class="list-group-item row" ng-repeat="entry in group" ng-if="entry.Active">
+                        <!--Entry Name - Regular and xs-->
+                        <div class="hidden-xs col-sm-3 list-group-item-heading text-right">
+                            <strong>{{ entry.Name }}</strong>
+                        </div>
+                        <div class="col-xs-7 visible-xs list-group-item-heading">
+                            <strong>{{ entry.Name }}</strong>
+                        </div>
+                        <!--/Entry Name - Regular and XS-->
+                        <!--visible-xs-only buttons-->
+                        <div class="col-xs-5 visible-xs text-right">
+                            <ng-include src="'glossaryEntryButtons.html'"
+                                        ng-if="user.permissions.glossary.canEdit"></ng-include>
+                        </div>
+                        <!--/visible-xs-only buttons-->
+                        <!--Glossary Entry Body-->
+                        <div class="col-xs-11 col-sm-6 list-group-item-text"
+                             ng-hide="entry.editing()">
+                            <p ng-hide="entry.Value"
+                               class="text-warning"
+                               ng-click="entry.edit()">
+                                <i class="fa fa-fw fa-hand-pointer-o fa-rotate-90"></i> needs definition
+                            </p>
+                            <!--Requirements containing term list-->
+                            <div class="hidden-xs glossary-entry-req-containing" ng-show="entry.$$showRelated">
+                                <h5 class="text-info">Requirements Containing Term</h5>
+                                <ul class="">
+                                    <li ng-repeat="requirement in entry.containsTerm">
+                                        <a ng-click="openRequirementModal(requirement.Name)">
+                                            {{ requirement.Name }}
+                                        </a>
+                                    </li>
+                                </ul>
+                                <hr class="small">
+                            </div>
+                            <!--/Requirements containing term list-->
+                            <!--Definition text-->
+                            <div ng-bind-html="entry.Value"
+                                 class="glossary-text-block"
+                                 ng-class="entry.$$collapsed ? 'glossary-entry-collapsed' : 'glossary-entry-expanded'"
+                                 smart-collapse
+                                 collapse-trigger-size=100
+                                 collapsible="entry"
+                                 update-collapsible-on="entry.$$editing"></div>
+                            <!--/Definition text-->
+                        </div>
+                        <!--/Glossary Entry Body-->
+                        <!--Glossary Entry editor-->
+                        <div class="col-xs-11 col-sm-6" ng-show="entry.editing()">
+                            <div style="visibility: visible; display:inline"
+                                 ng-show="entry.editing()">
+                                <form ng-submit="update(entry)">
+                                    <textarea froala="froalaOptions" ng-model="entry.Value"
+                                              focus-when="entry.$$editing"
+                                              focus-element="froala"></textarea>
+                                </form>
+                            </div>
+                        </div>
+                        <!--/Glossary Entry text-->
+                        <!--Glossary Entry Buttons hidden-xs-->
+                        <div class="hidden-xs col-sm-3">
+                            <div class="pull-right" ng-include src="'glossaryEntryButtons.html'"
+                                 ng-if="user.permissions.glossary.canEdit && !entry.readonly"></div>
+                            <a class="btn btn-default btn-sm" ng-if="entry.relatedCount()"
+                               ng-click="entry.toggleRelated()">
+                                <span class="badge">{{ entry.relatedCount() }}</span>
+                            </a>
+                        </div>
+                        <!--/Glossary Entry Buttons hidden-xs-->
+                        <!--Glossary Entry-->
+                    </div>
+                </section>
+
+                <div ng-show="!glossary.length && glossary.$resolved" class="list-group-item text-muted">
+                    <p>No glossary entries yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

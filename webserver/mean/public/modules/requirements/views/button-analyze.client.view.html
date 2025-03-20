@@ -1,0 +1,9 @@
+<button class="btn btn-success requirement-button-analyze requirement-form-group-button"
+        ng-init="r = requirement"
+        ng-click="analyze(r)"
+        ng-disabled="!r.Properties.canAnalyze()">
+    <i class="fa fa-fw"
+       ng-class="analysisLoading ? 'fa-refresh fa-spin' : 'fa-book'">
+    </i>
+    Analyze Description
+</button>

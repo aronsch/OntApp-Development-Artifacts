@@ -1,0 +1,78 @@
+<section interrogate>
+    <div class="page-header">
+        <h1><i class="fa fa-user-secret"></i> Interrogate Requirement</h1>
+    </div>
+    <div class="alert alert-danger" ng-show="error"> {{ error }}</div>
+    <div class="row float-cols">
+        <div class="search-col {{ colSize().search }}"
+             ng-if="searchEnabled">
+            <div ng-click="showSearch = !showSearch" class="text-primary" style="display: block;">
+                <h2>
+                    <i class="fa fa-pull-left fa-search"></i>
+                    <i class="fa fa-chevron-right" ng-hide="showSearch"></i>
+                    <i class="fa fa-chevron-left fa-pull-right" ng-show="showSearch"></i>
+                    <span class="search-hide-anim search-hide-bounce">Search</span>
+                </h2>
+            </div>
+            <div ng-show="showSearch">
+                <search-inline result-select-action="setReqName"></search-inline>
+            </div>
+        </div>
+        <div>
+            <div class="{{ colSize().content }}">
+                <div ng-show="requirement && !requirement.$resolved">
+                    <i class="fa fa-spin fa-refresh fa-4x text text-muted"></i>
+                </div>
+                <div ng-if="requirement.$$ready" ng-show="requirement.$$ready" ng-init="getRelated()">
+                    <p class="lead no-btm-margin text-muted">Interrogating</p>
+                    <h2 class="no-top-margin">{{ requirement.Properties.Name.Value }}</h2>
+                    <requirement-description></requirement-description>
+                    <h3 class="text-primary">SubRequirements
+                        <span ng-show="saving">
+                            <i class="fa fa-save"></i>
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </span>
+                    </h3>
+                    <div class="panel panel-primary"
+                         ng-if="subtypes._ready"
+                         ng-repeat="subtypeModel in subtypes.Properties"
+                         ng-init="subtype = subtypeModel.Label">
+                        <div class="panel-heading">
+                            <span class="btn btn-default pull-right"
+                                  ng-click="$parent.$parent.$parent.pickerVisible = true"><i
+                                    class="fa fa-search"></i>
+                            </span>
+                            <h4 class="panel-title" title="{{ subtypeModel.PropertyDescription }}"><strong>{{
+                                subtypeModel.Label }}</strong>
+                                <!-- FIXME: I messed the scoping on this. Shouldn't need to use $parent to access `pickerVisible` -->
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <related-list-interactive ng-init="relation = 'SubRequirement';"
+                                                      ng-class="{ 'text-muted': $parent.$parent.$parent.saving }"></related-list-interactive>
+                        </div>
+                        <div class="panel-footer">{{ subtypeModel.PropertyDescription }}</div>
+                    </div>
+
+                    <div class="panel panel-warning"
+                         ng-show="requirement.Properties.subRequirementsWithoutSubtype().length">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><span class="badge">{{ requirement.Properties.subRequirementsWithoutSubtype().length }}</span>
+                                Uncategorized</h4>
+                        </div>
+                        <div class="panel-body">
+                            <related-list-interactive
+                                    ng-init="relation = 'SubRequirement'; subtype = '';"></related-list-interactive>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-float col-float-right picker-right"-->
+            <div class="{{ colSize().picker }}"
+                 ng-if="requirement.$$ready" ng-show="$parent.pickerVisible">
+                <div class="btn btn-danger" ng-click="$parent.pickerVisible = false">Close Search</div>
+                <requirement-picker relation="SubRequirement" attach-with-subclass="true"></requirement-picker>
+            </div>
+        </div>
+    </div>
+</section>

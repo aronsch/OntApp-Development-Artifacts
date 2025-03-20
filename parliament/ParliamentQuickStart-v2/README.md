@@ -1,0 +1,1 @@
+[Parliament triple store](https://github.com/raytheonbbn/parliament) .jar and dependencies removed from this folder.
